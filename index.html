@@ -1,173 +1,60 @@
 <!DOCTYPE html>
-<!-- saved from url=(0045)https://lrhytz.github.io/HelpdeskORAPharmacy/ -->
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  
-  <!-- Internet Explorer Compatibility -->
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Helpdesk System</title>
-
-  <script src="./Helpdesk System_files/firebase-app-compat.js.download"></script>
-  <script src="./Helpdesk System_files/firebase-auth-compat.js.download"></script>
-  <script src="./Helpdesk System_files/firebase-database-compat.js.download"></script>
-  <script src="./Helpdesk System_files/app.js.download"></script>
-
-  <!-- Font Awesome for icons -->
-  <link rel="stylesheet" href="./Helpdesk System_files/all.min.css">
-  <!-- Your existing stylesheet -->
-  <link rel="stylesheet" href="./Helpdesk System_files/style.css">
-  <!-- Polyfills -->
-  <script src="./Helpdesk System_files/fetch.umd.js.download"></script>
-  <script>
-    // Firebase config
-    const firebaseConfig = {
-      apiKey: "AIzaSyBaSuFhNUeghfXEznYCHxYnagkjiojfO_M",
-      authDomain: "helpdeskrpharmacy.firebaseapp.com",
-      databaseURL: "https://helpdeskrpharmacy-default-rtdb.firebaseio.com",
-      projectId: "helpdeskrpharmacy",
-      messagingSenderId: "776189919696",
-      appId: "1:776189919696:web:ab3be5e265dbfff8faf9d5",
-      measurementId: "G-TL0ZQ9L17Q"
-    };
-    
-    // Initialize Firebase only if not already initialized
-    if (!firebase.apps.length) {
-      firebase.initializeApp(firebaseConfig); // Initialize Firebase if not already done
-    } else {
-      firebase.app(); // If already initialized, use that one
-    }
-  </script>
-
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Helpdesk System</title>
+    <link rel="stylesheet" href="./Helpdesk System_files/all.min.css">
+    <link rel="stylesheet" href="./Helpdesk System_files/style.css">
 </head>
 <body>
-  <header class="header">
-    <div class="header-inner">
-      <div class="oracle-image-container">
-        <img src="./Helpdesk System_files/oracle-svgrepo-com.svg" alt="Oracle Logo" class="oracle-image">
-      </div>
-      <h2 class="help-text">How can we help you today?</h2>
-      <div class="search-wrapper">
-        <i class="fas fa-search search-icon" aria-hidden="true"></i>
-        <input type="text" id="searchInput" placeholder="Search..." class="form-input" onkeyup="searchContent()">
-      </div>  
-      <!-- PROFILE ICON triggers login/profile modal -->
-      <i id="profile-icon" class="fas fa-user-circle"></i>
-    </div>
-  </header>
-
-  <div id="no-results" class="no-results" hidden="">
-    No matching topics found.
-  </div>
-
-  <main class="main-content">
-    <!-- everything here is now built dynamically -->
-    <div id="dynamic-accordion"><div class="dropdown-card" data-category="Working Instructions"><div class="dropdown-btn"><div class="card-title"><img src="./Helpdesk System_files/information-pamphlet.png" alt="Working Instructions" class="topic-icon"><span>Working Instructions</span></div><span id="arrow-working-instructions" class="arrow">▼</span></div><div class="dropdown-body" id="working-instructions-body" style="display: none;"><div class="subtopic-btn"><div class="subtopic-btn-content"><span>Receivables</span></div><span id="arrow-working-instructions-receivables" class="arrow">▼</span></div><div class="subtopic-body" id="working-instructions-receivables-body" style="display: none;"><div class="subtopic-btn"><div class="subtopic-btn-content"><span>Maintenance</span></div><span id="arrow-working-instructions-receivables-maintenance" class="arrow">▼</span></div><div class="subtopic-body" id="working-instructions-receivables-maintenance-body" style="display: none;"><ul id="approved_wi_receivables_maintenance" class="pdf-list"></ul></div><div class="subtopic-btn"><div class="subtopic-btn-content"><span>Operational Procedure</span></div><span id="arrow-working-instructions-receivables-operational-procedure" class="arrow">▼</span></div><div class="subtopic-body" id="working-instructions-receivables-operational-procedure-body" style="display: none;"><ul id="approved_wi_receivables_operational-procedure" class="pdf-list"></ul></div></div><div class="subtopic-btn"><div class="subtopic-btn-content"><span>Payables</span></div><span id="arrow-working-instructions-payables" class="arrow">▼</span></div><div class="subtopic-body" id="working-instructions-payables-body" style="display: none;"><div class="subtopic-btn"><div class="subtopic-btn-content"><span>Maintenance</span></div><span id="arrow-working-instructions-payables-maintenance" class="arrow">▼</span></div><div class="subtopic-body" id="working-instructions-payables-maintenance-body" style="display: none;"><ul id="approved_wi_payables_maintenance" class="pdf-list"></ul></div><div class="subtopic-btn"><div class="subtopic-btn-content"><span>Operational Procedure</span></div><span id="arrow-working-instructions-payables-operational-procedure" class="arrow">▼</span></div><div class="subtopic-body" id="working-instructions-payables-operational-procedure-body" style="display: none;"><ul id="approved_wi_payables_operational-procedure" class="pdf-list"></ul></div></div><div class="subtopic-btn"><div class="subtopic-btn-content"><span>Purchasing</span></div><span id="arrow-working-instructions-purchasing" class="arrow">▼</span></div><div class="subtopic-body" id="working-instructions-purchasing-body" style="display: none;"><div class="subtopic-btn"><div class="subtopic-btn-content"><span>Maintenance</span></div><span id="arrow-working-instructions-purchasing-maintenance" class="arrow">▼</span></div><div class="subtopic-body" id="working-instructions-purchasing-maintenance-body" style="display: none;"><ul id="approved_wi_purchasing_maintenance" class="pdf-list"></ul></div><div class="subtopic-btn"><div class="subtopic-btn-content"><span>Operational Procedure</span></div><span id="arrow-working-instructions-purchasing-operational-procedure" class="arrow">▼</span></div><div class="subtopic-body" id="working-instructions-purchasing-operational-procedure-body" style="display: none;"><ul id="approved_wi_purchasing_operational-procedure" class="pdf-list"></ul></div></div><div class="subtopic-btn"><div class="subtopic-btn-content"><span>Fixed Asset</span></div><span id="arrow-working-instructions-fixed-asset" class="arrow">▼</span></div><div class="subtopic-body" id="working-instructions-fixed-asset-body" style="display: none;"><div class="subtopic-btn"><div class="subtopic-btn-content"><span>Maintenance</span></div><span id="arrow-working-instructions-fixed-asset-maintenance" class="arrow">▼</span></div><div class="subtopic-body" id="working-instructions-fixed-asset-maintenance-body" style="display: none;"><ul id="approved_wi_fixed-asset_maintenance" class="pdf-list"></ul></div><div class="subtopic-btn"><div class="subtopic-btn-content"><span>Operational Procedure</span></div><span id="arrow-working-instructions-fixed-asset-operational-procedure" class="arrow">▼</span></div><div class="subtopic-body" id="working-instructions-fixed-asset-operational-procedure-body" style="display: none;"><ul id="approved_wi_fixed-asset_operational-procedure" class="pdf-list"></ul></div></div><div class="subtopic-btn"><div class="subtopic-btn-content"><span>Cash Management</span></div><span id="arrow-working-instructions-cash-management" class="arrow">▼</span></div><div class="subtopic-body" id="working-instructions-cash-management-body" style="display: none;"><div class="subtopic-btn"><div class="subtopic-btn-content"><span>Maintenance</span></div><span id="arrow-working-instructions-cash-management-maintenance" class="arrow">▼</span></div><div class="subtopic-body" id="working-instructions-cash-management-maintenance-body" style="display: none;"><ul id="approved_wi_cash-management_maintenance" class="pdf-list"></ul></div><div class="subtopic-btn"><div class="subtopic-btn-content"><span>Operational Procedure</span></div><span id="arrow-working-instructions-cash-management-operational-procedure" class="arrow">▼</span></div><div class="subtopic-body" id="working-instructions-cash-management-operational-procedure-body" style="display: none;"><ul id="approved_wi_cash-management_operational-procedure" class="pdf-list"></ul></div></div><div class="subtopic-btn"><div class="subtopic-btn-content"><span>Inventory</span></div><span id="arrow-working-instructions-inventory" class="arrow">▼</span></div><div class="subtopic-body" id="working-instructions-inventory-body" style="display: none;"><div class="subtopic-btn"><div class="subtopic-btn-content"><span>Maintenance</span></div><span id="arrow-working-instructions-inventory-maintenance" class="arrow">▼</span></div><div class="subtopic-body" id="working-instructions-inventory-maintenance-body" style="display: none;"><ul id="approved_wi_inventory_maintenance" class="pdf-list"></ul></div></div><div class="subtopic-btn"><div class="subtopic-btn-content"><span>HRMS Global</span></div><span id="arrow-working-instructions-hrms-global" class="arrow">▼</span></div><div class="subtopic-body" id="working-instructions-hrms-global-body" style="display: none;"><div class="subtopic-btn"><div class="subtopic-btn-content"><span>Maintenance</span></div><span id="arrow-working-instructions-hrms-global-maintenance" class="arrow">▼</span></div><div class="subtopic-body" id="working-instructions-hrms-global-maintenance-body" style="display: none;"><ul id="approved_wi_hrms-global_maintenance" class="pdf-list"></ul></div></div><div class="subtopic-btn"><div class="subtopic-btn-content"><span>General Ledger</span></div><span id="arrow-working-instructions-general-ledger" class="arrow">▼</span></div><div class="subtopic-body" id="working-instructions-general-ledger-body" style="display: none;"><div class="subtopic-btn"><div class="subtopic-btn-content"><span>Maintenance</span></div><span id="arrow-working-instructions-general-ledger-maintenance" class="arrow">▼</span></div><div class="subtopic-body" id="working-instructions-general-ledger-maintenance-body" style="display: none;"><ul id="approved_wi_general-ledger_maintenance" class="pdf-list"></ul></div><div class="subtopic-btn"><div class="subtopic-btn-content"><span>Operational Procedure</span></div><span id="arrow-working-instructions-general-ledger-operational-procedure" class="arrow">▼</span></div><div class="subtopic-body" id="working-instructions-general-ledger-operational-procedure-body" style="display: none;"><ul id="approved_wi_general-ledger_operational-procedure" class="pdf-list"></ul></div></div><div class="subtopic-btn"><div class="subtopic-btn-content"><span>Oracle Guides</span></div><span id="arrow-working-instructions-oracle-guides" class="arrow">▼</span></div><div class="subtopic-body" id="working-instructions-oracle-guides-body" style="display: none;"><ul id="approved_wi_oracle_guides" class="pdf-list"><li><a href="https://res.cloudinary.com/dkwkdsnk7/raw/upload/v1747790590/ORA-10-001_HOW_TO_LOG-IN_TO_ORACLE_1747790536384.pdf" target="_blank" rel="noopener noreferrer">ORA-10-001 HOW TO LOG-IN TO ORACLE</a></li><li><a href="https://res.cloudinary.com/dkwkdsnk7/raw/upload/v1747790627/ORA-10-002_ORACLE_USER_INTERFACE_NAVIGATION_1747790574887.pdf" target="_blank" rel="noopener noreferrer">ORA-10-002 ORACLE USER INTERFACE NAVIGATION</a></li></ul></div></div></div><div class="dropdown-card" data-category="Standard Operating Procedures"><div class="dropdown-btn"><div class="card-title"><img src="./Helpdesk System_files/standard-operating-procedures.png" alt="Standard Operating Procedures" class="topic-icon"><span>Standard Operating Procedures</span></div><span id="arrow-standard-operating-procedures" class="arrow">▼</span></div><div class="dropdown-body" id="standard-operating-procedures-body" style="display: none;"><div class="subtopic-btn"><div class="subtopic-btn-content"><span>Finance</span></div><span id="arrow-standard-operating-procedures-finance" class="arrow">▼</span></div><div class="subtopic-body" id="standard-operating-procedures-finance-body" style="display: none;"><div class="subtopic-btn"><div class="subtopic-btn-content"><span>AR</span></div><span id="arrow-standard-operating-procedures-finance-ar" class="arrow">▼</span></div><div class="subtopic-body" id="standard-operating-procedures-finance-ar-body" style="display: none;"><ul id="approved_sop_finance_ar" class="pdf-list"></ul></div><div class="subtopic-btn"><div class="subtopic-btn-content"><span>AP</span></div><span id="arrow-standard-operating-procedures-finance-ap" class="arrow">▼</span></div><div class="subtopic-body" id="standard-operating-procedures-finance-ap-body" style="display: none;"><ul id="approved_sop_finance_ap" class="pdf-list"><li><a href="https://res.cloudinary.com/dkwkdsnk7/raw/upload/v1750407218/Finance_and_Accounting_SOP_Oracle_Automated_Payment_Processing_signed_stamped_1750407507275.pdf" target="_blank" rel="noopener noreferrer">SOP_Oracle Automated Payment Processing</a></li></ul></div><div class="subtopic-btn"><div class="subtopic-btn-content"><span>Sales Audit</span></div><span id="arrow-standard-operating-procedures-finance-sales-audit" class="arrow">▼</span></div><div class="subtopic-body" id="standard-operating-procedures-finance-sales-audit-body" style="display: none;"><ul id="approved_sop_finance_sales-audit" class="pdf-list"></ul></div><div class="subtopic-btn"><div class="subtopic-btn-content"><span>General Ledger</span></div><span id="arrow-standard-operating-procedures-finance-general-ledger" class="arrow">▼</span></div><div class="subtopic-body" id="standard-operating-procedures-finance-general-ledger-body" style="display: none;"><ul id="approved_sop_finance_general-ledger" class="pdf-list"></ul></div><div class="subtopic-btn"><div class="subtopic-btn-content"><span>Inventory Control</span></div><span id="arrow-standard-operating-procedures-finance-inventory-control" class="arrow">▼</span></div><div class="subtopic-body" id="standard-operating-procedures-finance-inventory-control-body" style="display: none;"><ul id="approved_sop_finance_inventory-control" class="pdf-list"></ul></div><div class="subtopic-btn"><div class="subtopic-btn-content"><span>Tax</span></div><span id="arrow-standard-operating-procedures-finance-tax" class="arrow">▼</span></div><div class="subtopic-body" id="standard-operating-procedures-finance-tax-body" style="display: none;"><ul id="approved_sop_finance_tax" class="pdf-list"></ul></div></div><div class="subtopic-btn"><div class="subtopic-btn-content"><span>Treasury</span></div><span id="arrow-standard-operating-procedures-treasury" class="arrow">▼</span></div><div class="subtopic-body" id="standard-operating-procedures-treasury-body" style="display: none;"><div class="subtopic-btn"><div class="subtopic-btn-content"><span>Check-run</span></div><span id="arrow-standard-operating-procedures-treasury-check-run" class="arrow">▼</span></div><div class="subtopic-body" id="standard-operating-procedures-treasury-check-run-body" style="display: none;"><ul id="approved_sop_treasury_check-run" class="pdf-list"></ul></div><div class="subtopic-btn"><div class="subtopic-btn-content"><span>Bank Control</span></div><span id="arrow-standard-operating-procedures-treasury-bank-control" class="arrow">▼</span></div><div class="subtopic-body" id="standard-operating-procedures-treasury-bank-control-body" style="display: none;"><ul id="approved_sop_treasury_bank-control" class="pdf-list"></ul></div><div class="subtopic-btn"><div class="subtopic-btn-content"><span>Cash Flow</span></div><span id="arrow-standard-operating-procedures-treasury-cash-flow" class="arrow">▼</span></div><div class="subtopic-body" id="standard-operating-procedures-treasury-cash-flow-body" style="display: none;"><ul id="approved_sop_treasury_cash-flow" class="pdf-list"></ul></div></div><div class="subtopic-btn"><div class="subtopic-btn-content"><span>HR</span></div><span id="arrow-standard-operating-procedures-hr" class="arrow">▼</span></div><div class="subtopic-body" id="standard-operating-procedures-hr-body" style="display: none;"><div class="subtopic-btn"><div class="subtopic-btn-content"><span>Payroll</span></div><span id="arrow-standard-operating-procedures-hr-payroll" class="arrow">▼</span></div><div class="subtopic-body" id="standard-operating-procedures-hr-payroll-body" style="display: none;"><ul id="approved_sop_hr_payroll" class="pdf-list"></ul></div><div class="subtopic-btn"><div class="subtopic-btn-content"><span>Timekeeping</span></div><span id="arrow-standard-operating-procedures-hr-timekeeping" class="arrow">▼</span></div><div class="subtopic-body" id="standard-operating-procedures-hr-timekeeping-body" style="display: none;"><ul id="approved_sop_hr_timekeeping" class="pdf-list"></ul></div></div><div class="subtopic-btn"><div class="subtopic-btn-content"><span>IT</span></div><span id="arrow-standard-operating-procedures-it" class="arrow">▼</span></div><div class="subtopic-body" id="standard-operating-procedures-it-body" style="display: none;"><div class="subtopic-btn"><div class="subtopic-btn-content"><span>Application</span></div><span id="arrow-standard-operating-procedures-it-application" class="arrow">▼</span></div><div class="subtopic-body" id="standard-operating-procedures-it-application-body" style="display: none;"><ul id="approved_sop_it_application" class="pdf-list"></ul></div><div class="subtopic-btn"><div class="subtopic-btn-content"><span>Infra</span></div><span id="arrow-standard-operating-procedures-it-infra" class="arrow">▼</span></div><div class="subtopic-body" id="standard-operating-procedures-it-infra-body" style="display: none;"><ul id="approved_sop_it_infra" class="pdf-list"></ul></div></div><div class="subtopic-btn"><div class="subtopic-btn-content"><span>Finance Memo</span></div><span id="arrow-standard-operating-procedures-finance-memo" class="arrow">▼</span></div><div class="subtopic-body" id="standard-operating-procedures-finance-memo-body" style="display: none;"><ul id="approved_sop_finance_memo" class="pdf-list"><li><a href="https://res.cloudinary.com/dkwkdsnk7/raw/upload/v1750292759/Memo_Decision_Authority_of_Finance_05062025_1750293040371.pdf" target="_blank" rel="noopener noreferrer">Decision Authority of Finance-05062025</a></li><li><a href="https://res.cloudinary.com/dkwkdsnk7/raw/upload/v1764818317/RPI_GUIDELINES_FOR_REQUEST_FOR_PAYMENT_%28RFP%29_CASH_ADVANCE_LIQUIDATIONS_AND_REIMBURSEMENT_-_21Nov25-signed_1764818314984.pdf" target="_blank" rel="noopener noreferrer">Request for Payment, CA and Reimbursements</a></li><li><a href="https://res.cloudinary.com/dkwkdsnk7/raw/upload/v1772174781/Approved_-_RPI_Decision_Authority_-_Michael_So_as_GM_1772174775033.pdf" target="_blank" rel="noopener noreferrer">Approved - RPI Decision Authority - Michael So- GM</a></li><li><a href="https://res.cloudinary.com/dkwkdsnk7/raw/upload/v1772174893/ROSE_FD_Approval_Decision_Authority_1772174884915.pdf" target="_blank" rel="noopener noreferrer">Approved- RPI Decision Authority- FD</a></li><li><a href="https://res.cloudinary.com/dkwkdsnk7/raw/upload/v1772175085/Drugstore_Group_GGM_-_Decision_Authority_-_Dec_ExCom_1772175077121.pdf" target="_blank" rel="noopener noreferrer">Drugstore Group GGM - Decision Authority - Dec ExCom</a></li></ul></div></div></div><div class="dropdown-card" data-category="Functional Specifications"><div class="dropdown-btn"><div class="card-title"><img src="./Helpdesk System_files/design-resources.png" alt="Functional Specifications" class="topic-icon"><span>Functional Specifications</span></div><span id="arrow-functional-specifications" class="arrow">▼</span></div><div class="dropdown-body" id="functional-specifications-body" style="display: none;"><div class="subtopic-btn"><div class="subtopic-btn-content"><span>Receivables</span></div><span id="arrow-functional-specifications-receivables" class="arrow">▼</span></div><div class="subtopic-body" id="functional-specifications-receivables-body" style="display: none;"><ul id="approved_fs_receivables" class="pdf-list"><li><a href="https://res.cloudinary.com/dkwkdsnk7/raw/upload/v1748950949/MD050_Collection_Receipt_Form_1748950976602.pdf" target="_blank" rel="noopener noreferrer">MD050 Collection Receipt Form</a></li><li><a href="https://res.cloudinary.com/dkwkdsnk7/raw/upload/v1748950975/MD050_Service_Invoice_1748951005913.pdf" target="_blank" rel="noopener noreferrer">MD050 Service Invoice Form</a></li><li><a href="https://res.cloudinary.com/dkwkdsnk7/raw/upload/v1748950998/MD050_Credit_Memo_Form_1748951028955.pdf" target="_blank" rel="noopener noreferrer">MD050 Credit Memo Form</a></li><li><a href="https://res.cloudinary.com/dkwkdsnk7/raw/upload/v1748951047/MD050_E-Billing_Statement_1748951077661.pdf" target="_blank" rel="noopener noreferrer">MD050 Electronic Billing Statement</a></li><li><a href="https://res.cloudinary.com/dkwkdsnk7/raw/upload/v1748951084/MD050_AR_Invoice_Interface_from_MMS_1748951115072.pdf" target="_blank" rel="noopener noreferrer">MD050 AR Invoice Interface from MMS</a></li><li><a href="https://res.cloudinary.com/dkwkdsnk7/raw/upload/v1748951115/MD050_AR_Customer_Interface_from_MMS_1748951146304.pdf" target="_blank" rel="noopener noreferrer">MD050 AR Customer Interface from MMS</a></li></ul></div><div class="subtopic-btn"><div class="subtopic-btn-content"><span>Payables</span></div><span id="arrow-functional-specifications-payables" class="arrow">▼</span></div><div class="subtopic-body" id="functional-specifications-payables-body" style="display: none;"><ul id="approved_fs_payables" class="pdf-list"><li><a href="https://res.cloudinary.com/dkwkdsnk7/raw/upload/v1747623172/MD050_AP_Invoice_Listing_1747623153813.pdf" target="_blank" rel="noopener noreferrer">MD050 - AP Invoice Listing</a></li><li><a href="https://res.cloudinary.com/dkwkdsnk7/raw/upload/v1747623219/MD050_AP_Vendor_Interface_Enhancement_1747623203369.pdf" target="_blank" rel="noopener noreferrer">MD050 - AP Vendor Interface Enhancement</a></li></ul></div><div class="subtopic-btn"><div class="subtopic-btn-content"><span>Cash Management</span></div><span id="arrow-functional-specifications-cash-management" class="arrow">▼</span></div><div class="subtopic-body" id="functional-specifications-cash-management-body" style="display: none;"><ul id="approved_fs_cash_management" class="pdf-list"></ul></div><div class="subtopic-btn"><div class="subtopic-btn-content"><span>General Ledger</span></div><span id="arrow-functional-specifications-general-ledger" class="arrow">▼</span></div><div class="subtopic-body" id="functional-specifications-general-ledger-body" style="display: none;"><ul id="approved_fs_general_ledger" class="pdf-list"><li><a href="https://res.cloudinary.com/dkwkdsnk7/raw/upload/v1747622798/MD-50_Budget_Automation_Process_RPI_V2.3-signed_1747622780193.pdf" target="_blank" rel="noopener noreferrer">MD050 - Budget Monitoring Workflow</a></li></ul></div><div class="subtopic-btn"><div class="subtopic-btn-content"><span>Related Document</span></div><span id="arrow-functional-specifications-related-document" class="arrow">▼</span></div><div class="subtopic-body" id="functional-specifications-related-document-body" style="display: none;"><ul id="approved_fs_related_document" class="pdf-list"></ul></div><div class="subtopic-btn"><div class="subtopic-btn-content"><span>HR</span></div><span id="arrow-functional-specifications-hr" class="arrow">▼</span></div><div class="subtopic-body" id="functional-specifications-hr-body" style="display: none;"><ul id="approved_fs_hr" class="pdf-list"><li><a href="https://res.cloudinary.com/dkwkdsnk7/raw/upload/v1772676202/BRS_RxPOS_HRPRO2e_Integration_PO_Card_1772676199499.pdf" target="_blank" rel="noopener noreferrer">Rose Employee PO Card Integration</a></li></ul></div></div></div><div class="dropdown-card" data-category="Process Flow"><div class="dropdown-btn"><div class="card-title"><img src="./Helpdesk System_files/workflow.png" alt="Process Flow" class="topic-icon"><span>Process Flow</span></div><span id="arrow-process-flow" class="arrow">▼</span></div><div class="dropdown-body" id="process-flow-body" style="display: none;"><div class="subtopic-btn"><div class="subtopic-btn-content"><span>Finance</span></div><span id="arrow-process-flow-finance" class="arrow">▼</span></div><div class="subtopic-body" id="process-flow-finance-body" style="display: none;"><ul id="approved_pf_finance" class="pdf-list"></ul></div><div class="subtopic-btn"><div class="subtopic-btn-content"><span>Treasury</span></div><span id="arrow-process-flow-treasury" class="arrow">▲</span></div><div class="subtopic-body" id="process-flow-treasury-body" style="display: block;"><ul id="approved_pf_treasury" class="pdf-list"></ul></div><div class="subtopic-btn"><div class="subtopic-btn-content"><span>HR</span></div><span id="arrow-process-flow-hr" class="arrow">▲</span></div><div class="subtopic-body" id="process-flow-hr-body" style="display: block;"><ul id="approved_pf_hr" class="pdf-list"></ul></div><div class="subtopic-btn"><div class="subtopic-btn-content"><span>IT</span></div><span id="arrow-process-flow-it" class="arrow">▲</span></div><div class="subtopic-body" id="process-flow-it-body" style="display: block;"><ul id="approved_pf_it" class="pdf-list"></ul></div></div></div><div class="dropdown-card" data-category="System Flow"><div class="dropdown-btn"><div class="card-title"><img src="./Helpdesk System_files/workflow.png" alt="System Flow" class="topic-icon"><span>System Flow</span></div><span id="arrow-system-flow" class="arrow">▼</span></div><div class="dropdown-body" id="system-flow-body" style="display: none;"><div class="subtopic-btn"><div class="subtopic-btn-content"><span>Receivables</span></div><span id="arrow-system-flow-receivables" class="arrow">▲</span></div><div class="subtopic-body" id="system-flow-receivables-body" style="display: block;"><ul id="approved_sf_receivables" class="pdf-list"></ul></div><div class="subtopic-btn"><div class="subtopic-btn-content"><span>Payables</span></div><span id="arrow-system-flow-payables" class="arrow">▲</span></div><div class="subtopic-body" id="system-flow-payables-body" style="display: block;"><ul id="approved_sf_payables" class="pdf-list"></ul></div><div class="subtopic-btn"><div class="subtopic-btn-content"><span>Purchasing</span></div><span id="arrow-system-flow-purchasing" class="arrow">▼</span></div><div class="subtopic-body" id="system-flow-purchasing-body" style="display: none;"><ul id="approved_sf_purchasing" class="pdf-list"></ul></div><div class="subtopic-btn"><div class="subtopic-btn-content"><span>Fixed Asset</span></div><span id="arrow-system-flow-fixed-asset" class="arrow">▲</span></div><div class="subtopic-body" id="system-flow-fixed-asset-body" style="display: block;"><ul id="approved_sf_fixed_asset" class="pdf-list"></ul></div><div class="subtopic-btn"><div class="subtopic-btn-content"><span>Cash Management</span></div><span id="arrow-system-flow-cash-management" class="arrow">▲</span></div><div class="subtopic-body" id="system-flow-cash-management-body" style="display: block;"><ul id="approved_sf_cash_management" class="pdf-list"></ul></div><div class="subtopic-btn"><div class="subtopic-btn-content"><span>General Ledger</span></div><span id="arrow-system-flow-general-ledger" class="arrow">▲</span></div><div class="subtopic-body" id="system-flow-general-ledger-body" style="display: block;"><ul id="approved_sf_general_ledger" class="pdf-list"></ul></div></div></div><div class="dropdown-card" data-category="Templates"><div class="dropdown-btn"><div class="card-title"><img src="./Helpdesk System_files/templates.png" alt="Templates" class="topic-icon"><span>Templates</span></div><span id="arrow-templates" class="arrow">▼</span></div><div class="dropdown-body" id="templates-body" style="display: none;"><div class="subtopic-btn"><div class="subtopic-btn-content"><span>Forms</span></div><span id="arrow-templates-forms" class="arrow">▼</span></div><div class="subtopic-body" id="templates-forms-body" style="display: none;"><ul id="approved_tl_forms" class="pdf-list"><li><a href="https://res.cloudinary.com/dkwkdsnk7/raw/upload/v1747790838/ROSE_Cash_Advance_Liquidation_Form_V6-082023_1747790785821.xlsx" target="_blank" rel="noopener noreferrer">Cash Advance Liquidation Form</a></li><li><a href="https://res.cloudinary.com/dkwkdsnk7/raw/upload/v1747790859/RRHI_Cash_Advance_Form_1747790806483.xls" target="_blank" rel="noopener noreferrer">Cash Advance Form</a></li><li><a href="https://res.cloudinary.com/dkwkdsnk7/raw/upload/v1747790880/ROSE_Employee_Reimbursement_Form_V5-082023_1747790827927.xlsx" target="_blank" rel="noopener noreferrer">Employee Reimbursement Form</a></li><li><a href="https://res.cloudinary.com/dkwkdsnk7/raw/upload/v1758077068/User_Access_Request_Form_Revised_072225_1758077064901.xls" target="_blank" rel="noopener noreferrer">User Access Request Form_Revised</a></li></ul></div></div></div></div>
-  </main>
-  
-<!-- ========================= -->
-<!-- LOGIN / PROFILE MODAL    -->
-<!-- ========================= -->
-<div id="login-modal" class="modal" hidden="">
-  <div class="modal-content">
-    <button class="modal-close" aria-label="Close">×</button>
-    <h2 class="modal-title">Login</h2>
-
-    <!-- for auth errors -->
-    <div id="login-error" style="color: #c00; text-align:center; margin: 12px 0;"></div>
-
-    <input type="email" id="login-email" placeholder="Email" class="form-input">
-    <input type="password" id="login-password" placeholder="Password" class="form-input">
-
-    <!-- LOGIN → visible by default -->
-    <button id="login-btn" class="login-btn">Login</button>
-    <!-- LOGOUT → hidden until Firebase says you're logged in -->
-    <button id="logout-btn" class="login-btn" hidden="">Logout</button>
-    <!-- CHANGE PASSWORD → hidden until you're logged in -->
-    <button id="change-password-btn" class="login-btn" hidden="">Change Password</button>
-  </div>
-</div>
-  <!-- ========================= -->
-  <!-- ADD FILE & ARCHIVED MODALS -->
-  <!-- ========================= -->
-  <div id="file-upload-modal" class="modal" hidden="">
-    <div class="modal-content">
-      <button class="modal-close" aria-label="Close">×</button>
-      <div id="file-upload-form">
-        <div class="file-upload-inner">
-          <div class="custom-file-upload">
-            <label for="fileInput" class="choose-file-btn">Choose File</label>
-            <span id="selected-file-name" class="file-name">No file chosen</span>
-          </div>
-          <input type="file" id="fileInput" accept=".pdf,.xlsx,.xls" hidden="">
-  
-          <!-- Title -->
-          <input type="text" id="fileTitle" placeholder="File Title" class="form-input small-input">
-          <!-- Pick an existing category -->
-          <select id="module-dropdown" class="form-select small-select"><optgroup label="Working Instructions"><option value="Receivables_Maintenance">Receivables → Maintenance</option><option value="Receivables_Operational Procedure">Receivables → Operational Procedure</option><option value="Payables_Maintenance">Payables → Maintenance</option><option value="Payables_Operational Procedure">Payables → Operational Procedure</option><option value="Purchasing_Maintenance">Purchasing → Maintenance</option><option value="Purchasing_Operational Procedure">Purchasing → Operational Procedure</option><option value="Fixed Asset_Maintenance">Fixed Asset → Maintenance</option><option value="Fixed Asset_Operational Procedure">Fixed Asset → Operational Procedure</option><option value="Cash Management_Maintenance">Cash Management → Maintenance</option><option value="Cash Management_Operational Procedure">Cash Management → Operational Procedure</option><option value="Inventory_Maintenance">Inventory → Maintenance</option><option value="HRMS Global_Maintenance">HRMS Global → Maintenance</option><option value="General Ledger_Maintenance">General Ledger → Maintenance</option><option value="General Ledger_Operational Procedure">General Ledger → Operational Procedure</option><option value="Oracle Guides">Oracle Guides</option></optgroup><optgroup label="Standard Operating Procedures"><option value="Finance_AR">Finance → AR</option><option value="Finance_AP">Finance → AP</option><option value="Finance_Sales Audit">Finance → Sales Audit</option><option value="Finance_General Ledger">Finance → General Ledger</option><option value="Finance_Inventory Control">Finance → Inventory Control</option><option value="Finance_Tax">Finance → Tax</option><option value="Treasury_Check-run">Treasury → Check-run</option><option value="Treasury_Bank Control">Treasury → Bank Control</option><option value="Treasury_Cash Flow">Treasury → Cash Flow</option><option value="HR_Payroll">HR → Payroll</option><option value="HR_Timekeeping">HR → Timekeeping</option><option value="IT_Application">IT → Application</option><option value="IT_Infra">IT → Infra</option><option value="Finance Memo">Finance Memo</option></optgroup><optgroup label="Functional Specifications"><option value="Receivables">Receivables</option><option value="Payables">Payables</option><option value="Cash Management">Cash Management</option><option value="General Ledger">General Ledger</option><option value="Related Document">Related Document</option><option value="HR">HR</option></optgroup><optgroup label="Process Flow"><option value="Finance">Finance</option><option value="Treasury">Treasury</option><option value="HR">HR</option><option value="IT">IT</option></optgroup><optgroup label="System Flow"><option value="Receivables">Receivables</option><option value="Payables">Payables</option><option value="Purchasing">Purchasing</option><option value="Fixed Asset">Fixed Asset</option><option value="Cash Management">Cash Management</option><option value="General Ledger">General Ledger</option></optgroup><optgroup label="Templates"><option value="Forms">Forms</option></optgroup></select>
-          <button id="uploadBtn" class="upload-btn">Upload</button>
+    <div class="container">
+        <h1>How can we help you today?</h1>
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Search...">
         </div>
-      </div>
+        
+        <div class="cards-grid">
+            <div class="dropdown-card" data-category="Working Instructions">
+                <div class="dropdown-btn">
+                    <div class="card-title">
+                        <img src="./Helpdesk System_files/working_instructions_icon.png" alt="">
+                        Working Instructions
+                    </div>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+
+            <div class="dropdown-card" data-category="SOPs">
+                <div class="dropdown-btn">
+                    <div class="card-title">
+                        <img src="./Helpdesk System_files/sop_icon.png" alt="">
+                        Standard Operating Procedures
+                    </div>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+
+            <div class="dropdown-card" data-category="Functional Specifications">
+                <div class="dropdown-btn">
+                    <div class="card-title">
+                        <img src="./Helpdesk System_files/specs_icon.png" alt="">
+                        Functional Specifications
+                    </div>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+
+            <div class="dropdown-card" data-category="Templates">
+                <div class="dropdown-btn">
+                    <div class="card-title">
+                        <img src="./Helpdesk System_files/templates_icon.png" alt="">
+                        Templates
+                    </div>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-
-  <!-- Archived Files Modal -->
-  <div id="archived-modal" class="modal" hidden="">
-    <div class="modal-content">
-      <button class="modal-close" aria-label="Close">×</button>
-      <h2>Archived Files</h2>
-      <ul id="archived-files-list" class="pdf-list"></ul>
-    </div>
-  </div>
-
-  <div id="left-buttons">
-    <!-- hidden by default, JS will show as appropriate -->
-    <button id="view-archived-btn" class="view-archived-btn" style="display:none">
-      <i class="fas fa-archive"></i> Archived Files
-    </button>
-    <button id="add-file-btn" class="add-file-btn" style="display:none">
-      <i class="fas fa-plus"></i> Add
-    </button>
-    <button id="admin-login-btn" class="admin-login-btn" style="display:none">
-      <i class="fas fa-user-shield"></i> Admin
-    </button>
-  
-    <!-- Admin-only “Add Section” button -->
-    <button id="add-section-btn" class="admin-only" style="display:none; margin-left:8px;">
-      <i class="fas fa-plus"></i> Add Section
-    </button>
-  </div>
-  
- <!-- Add Section Modal -->
-<div id="add-section-modal" class="modal" hidden="">
-  <div class="modal-content">
-    <button class="modal-close" aria-label="Close">×</button>
-    <h2>Add New Section</h2>
-
-    <!-- 1) Main Topic selector -->
-    <label>
-      Main Topic:
-      <select id="add-section-main" class="form-select">
-        <option>Working Instructions</option>
-        <option>Standard Operating Procedures</option>
-        <option>Functional Specifications</option>
-        <option>Process Flow</option>
-        <option>System Flow</option>
-        <option>Templates</option>
-      </select>
-    </label>
-
-    <!-- 2) Section Name input -->
-    <label>
-      Section Name:
-      <input type="text" id="add-section-name" class="form-input" placeholder="e.g. Special Reports">
-    </label>
-
-    <!-- 3) Save button -->
-    <button id="add-section-save" class="upload-btn">Save</button>
-  </div>
-</div>
-
-
-
-
-</body></html>
+</body>
+</html>
