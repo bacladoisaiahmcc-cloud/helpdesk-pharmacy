@@ -578,6 +578,7 @@
             height: 100%;
             background-color: rgba(0, 0, 0, 0.5);
             animation: fadeIn 0.3s ease;
+            overflow-y: auto;
         }
 
         @keyframes fadeIn {
@@ -587,8 +588,9 @@
 
         .modal.show {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             justify-content: center;
+            padding: 40px 20px;
         }
 
         .modal-content {
@@ -596,10 +598,11 @@
             padding: 40px;
             border-radius: 12px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-            max-width: 500px;
-            width: 90%;
+            max-width: 600px;
+            width: 100%;
             animation: slideUp 0.3s ease;
             position: relative;
+            margin-top: 20px;
         }
 
         .modal-close {
@@ -622,6 +625,72 @@
             font-size: 24px;
             margin-bottom: 24px;
             color: #1a1a1a;
+        }
+
+        /* ===== ADMIN TABS ===== */
+        .admin-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .admin-tab {
+            padding: 12px 20px;
+            border: none;
+            background: none;
+            font-size: 14px;
+            font-weight: 600;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+        }
+
+        .admin-tab:hover {
+            color: #2c5282;
+        }
+
+        .admin-tab.active {
+            color: #2c5282;
+            border-bottom-color: #2c5282;
+        }
+
+        .admin-tab-content {
+            display: none;
+        }
+
+        .admin-tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .admin-section {
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+
+        .admin-section h3 {
+            font-size: 16px;
+            color: #1a1a1a;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .admin-section h3 i {
+            font-size: 20px;
+            color: #2c5282;
+        }
+
+        .admin-section p {
+            color: #666;
+            font-size: 13px;
+            line-height: 1.6;
         }
 
         .form-group-modal {
@@ -671,6 +740,38 @@
         .modal-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(44, 82, 130, 0.4);
+        }
+
+        .archived-list,
+        .admin-info {
+            background: #f0f0f0;
+            padding: 16px;
+            border-radius: 6px;
+            margin-bottom: 16px;
+        }
+
+        .archived-item,
+        .info-item {
+            padding: 12px;
+            background: #ffffff;
+            border-radius: 4px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .archived-item:last-child,
+        .info-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .info-item strong {
+            color: #1a1a1a;
+        }
+
+        .info-item span {
+            color: #2c5282;
         }
 
         /* ===== FOOTER ===== */
@@ -751,6 +852,15 @@
             .modal-content {
                 padding: 30px 20px;
             }
+
+            .admin-tabs {
+                flex-wrap: wrap;
+            }
+
+            .admin-tab {
+                padding: 10px 16px;
+                font-size: 13px;
+            }
         }
     </style>
 </head>
@@ -815,16 +925,16 @@
         <!-- Admin Toolbar -->
         <div class="admin-toolbar" id="adminToolbar" style="display: none;">
             <span class="admin-toolbar-label">Admin Tools:</span>
-            <button class="admin-btn btn-archived" onclick="openArchivedModal()">
+            <button class="admin-btn btn-archived" onclick="openAdminPanel('archived')">
                 <i class="fas fa-archive"></i> Archived Files
             </button>
-            <button class="admin-btn btn-add" onclick="openAddFileModal()">
+            <button class="admin-btn btn-add" onclick="openAdminPanel('add')">
                 <i class="fas fa-plus"></i> Add
             </button>
-            <button class="admin-btn btn-admin" onclick="openAdminPanel()">
+            <button class="admin-btn btn-admin" onclick="openAdminPanel('admin')">
                 <i class="fas fa-user-shield"></i> Admin
             </button>
-            <button class="admin-btn btn-add-section" onclick="openAddSectionModal()">
+            <button class="admin-btn btn-add-section" onclick="openAdminPanel('section')">
                 <i class="fas fa-plus"></i> Add Section
             </button>
         </div>
@@ -977,93 +1087,140 @@
         </footer>
     </div>
 
-    <!-- ===== MODALS ===== -->
-
-    <!-- Archived Files Modal -->
-    <div id="archivedModal" class="modal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeModal('archivedModal')">×</button>
-            <h2>Archived Files</h2>
-            <div id="archivedList">
-                <p style="color: #999;">No archived files yet.</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Add File Modal -->
-    <div id="addFileModal" class="modal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeModal('addFileModal')">×</button>
-            <h2>Add New File</h2>
-            <form onsubmit="handleAddFile(event)">
-                <div class="form-group-modal">
-                    <label for="fileName">File Name</label>
-                    <input type="text" id="fileName" placeholder="Enter file name" required>
-                </div>
-                <div class="form-group-modal">
-                    <label for="fileCategory">Category</label>
-                    <select id="fileCategory" required>
-                        <option value="">Select Category</option>
-                        <option value="Working Instructions">Working Instructions</option>
-                        <option value="Standard Operating Procedures">Standard Operating Procedures</option>
-                        <option value="Functional Specifications">Functional Specifications</option>
-                        <option value="Templates">Templates</option>
-                    </select>
-                </div>
-                <div class="form-group-modal">
-                    <label for="fileUpload">Upload File (PDF, XLSX, XLS)</label>
-                    <input type="file" id="fileUpload" accept=".pdf,.xlsx,.xls" required>
-                </div>
-                <button type="submit" class="modal-btn">Upload File</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Admin Panel Modal -->
+    <!-- ===== UNIFIED ADMIN MODAL ===== -->
     <div id="adminModal" class="modal">
         <div class="modal-content">
-            <button class="modal-close" onclick="closeModal('adminModal')">×</button>
+            <button class="modal-close" onclick="closeAdminModal()">×</button>
             <h2>Admin Panel</h2>
-            <div style="padding: 20px; background: #f0f0f0; border-radius: 6px;">
-                <p style="margin-bottom: 12px;"><strong>Logged in as:</strong> <span id="adminEmail" style="color: #2c5282;"></span></p>
-                <p style="margin-bottom: 12px;"><strong>Role:</strong> <span style="color: #2c5282;">Administrator</span></p>
-                <p style="color: #666; font-size: 13px; margin-top: 20px;">You have full access to manage all helpdesk content, including:</p>
-                <ul style="margin-top: 10px; color: #666; font-size: 13px; padding-left: 20px;">
-                    <li>Upload and manage files</li>
-                    <li>Archive/restore documents</li>
-                    <li>Create new sections</li>
-                    <li>Manage user access</li>
-                </ul>
-            </div>
-        </div>
-    </div>
 
-    <!-- Add Section Modal -->
-    <div id="addSectionModal" class="modal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeModal('addSectionModal')">×</button>
-            <h2>Add New Section</h2>
-            <form onsubmit="handleAddSection(event)">
-                <div class="form-group-modal">
-                    <label for="sectionCategory">Main Category</label>
-                    <select id="sectionCategory" required>
-                        <option value="">Select Category</option>
-                        <option value="Working Instructions">Working Instructions</option>
-                        <option value="Standard Operating Procedures">Standard Operating Procedures</option>
-                        <option value="Functional Specifications">Functional Specifications</option>
-                        <option value="Templates">Templates</option>
-                    </select>
+            <!-- Admin Tabs -->
+            <div class="admin-tabs">
+                <button class="admin-tab active" onclick="switchAdminTab('archived')">
+                    <i class="fas fa-archive"></i> Archived Files
+                </button>
+                <button class="admin-tab" onclick="switchAdminTab('add')">
+                    <i class="fas fa-plus"></i> Add Files
+                </button>
+                <button class="admin-tab" onclick="switchAdminTab('admin')">
+                    <i class="fas fa-user-shield"></i> Admin Info
+                </button>
+                <button class="admin-tab" onclick="switchAdminTab('section')">
+                    <i class="fas fa-plus"></i> Add Section
+                </button>
+            </div>
+
+            <!-- Archived Files Tab -->
+            <div id="archivedTab" class="admin-tab-content active">
+                <div class="admin-section">
+                    <h3><i class="fas fa-archive"></i> Archived Documents</h3>
+                    <p>Manage and restore archived files from your helpdesk system.</p>
                 </div>
-                <div class="form-group-modal">
-                    <label for="sectionName">Section Name</label>
-                    <input type="text" id="sectionName" placeholder="e.g., New Department" required>
+                <div class="archived-list">
+                    <div class="archived-item">
+                        <span>Finance_Guidelines_2024.pdf</span>
+                        <button style="padding: 6px 12px; background: #2c5282; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px;">Restore</button>
+                    </div>
+                    <div class="archived-item">
+                        <span>Old_Procedures_v1.xlsx</span>
+                        <button style="padding: 6px 12px; background: #2c5282; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px;">Restore</button>
+                    </div>
                 </div>
-                <div class="form-group-modal">
-                    <label for="sectionDescription">Description (Optional)</label>
-                    <textarea id="sectionDescription" placeholder="Enter section description..." rows="3"></textarea>
+                <p style="color: #999; font-size: 12px; margin-top: 12px; text-align: center;">2 archived files • Last updated: 2024-03-20</p>
+            </div>
+
+            <!-- Add Files Tab -->
+            <div id="addTab" class="admin-tab-content">
+                <div class="admin-section">
+                    <h3><i class="fas fa-plus"></i> Upload New Files</h3>
+                    <p>Add new documents to the helpdesk system.</p>
                 </div>
-                <button type="submit" class="modal-btn">Create Section</button>
-            </form>
+                <form onsubmit="handleAddFile(event)">
+                    <div class="form-group-modal">
+                        <label for="fileName">File Name</label>
+                        <input type="text" id="fileName" placeholder="Enter file name" required>
+                    </div>
+                    <div class="form-group-modal">
+                        <label for="fileCategory">Category</label>
+                        <select id="fileCategory" required>
+                            <option value="">Select Category</option>
+                            <option value="Working Instructions">Working Instructions</option>
+                            <option value="Standard Operating Procedures">Standard Operating Procedures</option>
+                            <option value="Functional Specifications">Functional Specifications</option>
+                            <option value="Templates">Templates</option>
+                        </select>
+                    </div>
+                    <div class="form-group-modal">
+                        <label for="fileUpload">Upload File (PDF, XLSX, XLS)</label>
+                        <input type="file" id="fileUpload" accept=".pdf,.xlsx,.xls" required>
+                    </div>
+                    <button type="submit" class="modal-btn">Upload File</button>
+                </form>
+            </div>
+
+            <!-- Admin Info Tab -->
+            <div id="adminTab" class="admin-tab-content">
+                <div class="admin-section">
+                    <h3><i class="fas fa-user-shield"></i> Administrator Information</h3>
+                    <p>View your admin account details and permissions.</p>
+                </div>
+                <div class="admin-info">
+                    <div class="info-item">
+                        <strong>Logged in as:</strong>
+                        <span id="adminEmailDisplay">admin@example.com</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Role:</strong>
+                        <span>Administrator</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Access Level:</strong>
+                        <span>Full Control</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Last Login:</strong>
+                        <span id="lastLogin">Today at 10:30 AM</span>
+                    </div>
+                </div>
+                <div class="admin-section" style="background: #e3f2fd; border-left: 4px solid #2c5282;">
+                    <h3 style="margin-top: 0;"><i class="fas fa-key"></i> Permissions</h3>
+                    <ul style="margin: 0; padding-left: 20px; color: #666; font-size: 13px;">
+                        <li>✓ Upload and manage files</li>
+                        <li>✓ Archive/restore documents</li>
+                        <li>✓ Create new sections</li>
+                        <li>✓ Manage user access</li>
+                        <li>✓ View system logs</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Add Section Tab -->
+            <div id="sectionTab" class="admin-tab-content">
+                <div class="admin-section">
+                    <h3><i class="fas fa-plus"></i> Create New Section</h3>
+                    <p>Add a new section or subcategory to the helpdesk system.</p>
+                </div>
+                <form onsubmit="handleAddSection(event)">
+                    <div class="form-group-modal">
+                        <label for="sectionCategory">Main Category</label>
+                        <select id="sectionCategory" required>
+                            <option value="">Select Category</option>
+                            <option value="Working Instructions">Working Instructions</option>
+                            <option value="Standard Operating Procedures">Standard Operating Procedures</option>
+                            <option value="Functional Specifications">Functional Specifications</option>
+                            <option value="Templates">Templates</option>
+                        </select>
+                    </div>
+                    <div class="form-group-modal">
+                        <label for="sectionName">Section Name</label>
+                        <input type="text" id="sectionName" placeholder="e.g., New Department" required>
+                    </div>
+                    <div class="form-group-modal">
+                        <label for="sectionDescription">Description (Optional)</label>
+                        <textarea id="sectionDescription" placeholder="Enter section description..." rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="modal-btn">Create Section</button>
+                </form>
+            </div>
         </div>
     </div>
 
@@ -1095,7 +1252,7 @@
                 localStorage.setItem('isLoggedIn', 'true');
                 
                 // Set admin email in modal
-                document.getElementById('adminEmail').textContent = email;
+                document.getElementById('adminEmailDisplay').textContent = email;
             } else {
                 errorMessage.textContent = 'Please enter valid email and password';
                 errorMessage.classList.add('show');
@@ -1126,7 +1283,7 @@
                 if (localStorage.getItem('isAdmin') === 'true') {
                     document.getElementById('adminToolbar').style.display = 'flex';
                 }
-                document.getElementById('adminEmail').textContent = localStorage.getItem('userEmail');
+                document.getElementById('adminEmailDisplay').textContent = localStorage.getItem('userEmail');
             }
         });
 
@@ -1166,30 +1323,37 @@
             });
         });
 
-        // ===== MODAL FUNCTIONS =====
-        function openArchivedModal() {
-            document.getElementById('archivedModal').classList.add('show');
-        }
-
-        function openAddFileModal() {
-            document.getElementById('addFileModal').classList.add('show');
-        }
-
-        function openAdminPanel() {
+        // ===== ADMIN PANEL FUNCTIONS =====
+        function openAdminPanel(tab) {
             document.getElementById('adminModal').classList.add('show');
+            switchAdminTab(tab);
         }
 
-        function openAddSectionModal() {
-            document.getElementById('addSectionModal').classList.add('show');
+        function switchAdminTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.admin-tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active class from all buttons
+            document.querySelectorAll('.admin-tab').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabName + 'Tab').classList.add('active');
+            
+            // Add active class to button
+            event.target.closest('.admin-tab').classList.add('active');
         }
 
-        function closeModal(modalId) {
-            document.getElementById(modalId).classList.remove('show');
+        function closeAdminModal() {
+            document.getElementById('adminModal').classList.remove('show');
         }
 
         // Close modal when clicking outside of content
         window.addEventListener('click', function(event) {
-            if (event.target.classList.contains('modal')) {
+            if (event.target.id === 'adminModal') {
                 event.target.classList.remove('show');
             }
         });
@@ -1200,8 +1364,7 @@
             const fileName = document.getElementById('fileName').value;
             const fileCategory = document.getElementById('fileCategory').value;
             alert(`File "${fileName}" has been added to ${fileCategory}`);
-            closeModal('addFileModal');
-            document.getElementById('addFileModal').querySelector('form').reset();
+            document.getElementById('addTab').querySelector('form').reset();
         }
 
         function handleAddSection(event) {
@@ -1209,8 +1372,7 @@
             const sectionName = document.getElementById('sectionName').value;
             const sectionCategory = document.getElementById('sectionCategory').value;
             alert(`Section "${sectionName}" has been created under ${sectionCategory}`);
-            closeModal('addSectionModal');
-            document.getElementById('addSectionModal').querySelector('form').reset();
+            document.getElementById('sectionTab').querySelector('form').reset();
         }
 
         // ===== USER PROFILE =====
