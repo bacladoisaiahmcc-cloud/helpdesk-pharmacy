@@ -125,6 +125,17 @@
             transform: translateY(0);
         }
 
+        .demo-credentials {
+            background: #e3f2fd;
+            border: 1px solid #bbdefb;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            color: #1565c0;
+            margin-top: 16px;
+            text-align: center;
+        }
+
         .remember-me {
             display: flex;
             align-items: center;
@@ -267,6 +278,109 @@
             background: rgba(255, 255, 255, 0.3);
             border-color: rgba(255, 255, 255, 0.5);
             transform: scale(1.05);
+        }
+
+        .logout-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: #ffffff;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* ===== ADMIN TOOLBAR ===== */
+        .admin-toolbar {
+            background: #f0f0f0;
+            padding: 16px 40px;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+            flex-wrap: wrap;
+        }
+
+        .admin-toolbar-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-right: 8px;
+        }
+
+        .admin-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .btn-archived {
+            background: #4a4a4a;
+            color: #ffffff;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-archived:hover {
+            background: #333;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-add {
+            background: #1976d2;
+            color: #ffffff;
+            box-shadow: 0 2px 8px rgba(25, 118, 210, 0.3);
+        }
+
+        .btn-add:hover {
+            background: #1565c0;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(25, 118, 210, 0.4);
+        }
+
+        .btn-admin {
+            background: #4a4a4a;
+            color: #ffffff;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-admin:hover {
+            background: #333;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-add-section {
+            background: #1976d2;
+            color: #ffffff;
+            box-shadow: 0 2px 8px rgba(25, 118, 210, 0.3);
+        }
+
+        .btn-add-section:hover {
+            background: #1565c0;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(25, 118, 210, 0.4);
+        }
+
+        .admin-btn i {
+            font-size: 16px;
         }
 
         /* ===== MAIN CONTENT ===== */
@@ -453,6 +567,112 @@
             text-decoration: underline;
         }
 
+        /* ===== MODALS ===== */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 90%;
+            animation: slideUp 0.3s ease;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #999;
+            transition: color 0.3s ease;
+        }
+
+        .modal-close:hover {
+            color: #333;
+        }
+
+        .modal-content h2 {
+            font-size: 24px;
+            margin-bottom: 24px;
+            color: #1a1a1a;
+        }
+
+        .form-group-modal {
+            margin-bottom: 20px;
+        }
+
+        .form-group-modal label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .form-group-modal input,
+        .form-group-modal select,
+        .form-group-modal textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group-modal input:focus,
+        .form-group-modal select:focus,
+        .form-group-modal textarea:focus {
+            outline: none;
+            border-color: #2c5282;
+            box-shadow: 0 0 0 3px rgba(44, 82, 130, 0.1);
+        }
+
+        .modal-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #2c5282 0%, #1e3a5f 100%);
+            color: #ffffff;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .modal-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(44, 82, 130, 0.4);
+        }
+
         /* ===== FOOTER ===== */
         footer {
             background: #f0f0f0;
@@ -472,24 +692,6 @@
             text-decoration: underline;
         }
 
-        /* ===== LOGOUT BUTTON ===== */
-        .logout-btn {
-            background: rgba(255, 255, 255, 0.2);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            color: #ffffff;
-            padding: 8px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .logout-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-            border-color: rgba(255, 255, 255, 0.5);
-        }
-
         /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
             .login-box {
@@ -503,6 +705,17 @@
                 align-items: flex-start;
                 padding: 16px 20px;
                 min-height: auto;
+            }
+
+            .admin-toolbar {
+                padding: 12px 20px;
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .admin-btn {
+                width: 100%;
+                justify-content: center;
             }
 
             .header-left {
@@ -533,6 +746,10 @@
 
             .accordion-item.active .accordion-body {
                 padding: 16px 20px;
+            }
+
+            .modal-content {
+                padding: 30px 20px;
             }
         }
     </style>
@@ -566,6 +783,11 @@
                     <input type="checkbox" id="remember" name="remember">
                     <label for="remember" style="margin: 0;">Remember me</label>
                 </div>
+
+                <div class="demo-credentials">
+                    <strong>Demo Credentials:</strong><br>
+                    Email: admin@example.com | Password: admin123
+                </div>
             </form>
         </div>
     </div>
@@ -589,6 +811,23 @@
                 <button class="logout-btn" onclick="handleLogout()">Logout</button>
             </div>
         </header>
+
+        <!-- Admin Toolbar -->
+        <div class="admin-toolbar" id="adminToolbar" style="display: none;">
+            <span class="admin-toolbar-label">Admin Tools:</span>
+            <button class="admin-btn btn-archived" onclick="openArchivedModal()">
+                <i class="fas fa-archive"></i> Archived Files
+            </button>
+            <button class="admin-btn btn-add" onclick="openAddFileModal()">
+                <i class="fas fa-plus"></i> Add
+            </button>
+            <button class="admin-btn btn-admin" onclick="openAdminPanel()">
+                <i class="fas fa-user-shield"></i> Admin
+            </button>
+            <button class="admin-btn btn-add-section" onclick="openAddSectionModal()">
+                <i class="fas fa-plus"></i> Add Section
+            </button>
+        </div>
 
         <!-- Main Container -->
         <div class="container">
@@ -738,6 +977,96 @@
         </footer>
     </div>
 
+    <!-- ===== MODALS ===== -->
+
+    <!-- Archived Files Modal -->
+    <div id="archivedModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('archivedModal')">×</button>
+            <h2>Archived Files</h2>
+            <div id="archivedList">
+                <p style="color: #999;">No archived files yet.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add File Modal -->
+    <div id="addFileModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('addFileModal')">×</button>
+            <h2>Add New File</h2>
+            <form onsubmit="handleAddFile(event)">
+                <div class="form-group-modal">
+                    <label for="fileName">File Name</label>
+                    <input type="text" id="fileName" placeholder="Enter file name" required>
+                </div>
+                <div class="form-group-modal">
+                    <label for="fileCategory">Category</label>
+                    <select id="fileCategory" required>
+                        <option value="">Select Category</option>
+                        <option value="Working Instructions">Working Instructions</option>
+                        <option value="Standard Operating Procedures">Standard Operating Procedures</option>
+                        <option value="Functional Specifications">Functional Specifications</option>
+                        <option value="Templates">Templates</option>
+                    </select>
+                </div>
+                <div class="form-group-modal">
+                    <label for="fileUpload">Upload File (PDF, XLSX, XLS)</label>
+                    <input type="file" id="fileUpload" accept=".pdf,.xlsx,.xls" required>
+                </div>
+                <button type="submit" class="modal-btn">Upload File</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin Panel Modal -->
+    <div id="adminModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('adminModal')">×</button>
+            <h2>Admin Panel</h2>
+            <div style="padding: 20px; background: #f0f0f0; border-radius: 6px;">
+                <p style="margin-bottom: 12px;"><strong>Logged in as:</strong> <span id="adminEmail" style="color: #2c5282;"></span></p>
+                <p style="margin-bottom: 12px;"><strong>Role:</strong> <span style="color: #2c5282;">Administrator</span></p>
+                <p style="color: #666; font-size: 13px; margin-top: 20px;">You have full access to manage all helpdesk content, including:</p>
+                <ul style="margin-top: 10px; color: #666; font-size: 13px; padding-left: 20px;">
+                    <li>Upload and manage files</li>
+                    <li>Archive/restore documents</li>
+                    <li>Create new sections</li>
+                    <li>Manage user access</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Section Modal -->
+    <div id="addSectionModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('addSectionModal')">×</button>
+            <h2>Add New Section</h2>
+            <form onsubmit="handleAddSection(event)">
+                <div class="form-group-modal">
+                    <label for="sectionCategory">Main Category</label>
+                    <select id="sectionCategory" required>
+                        <option value="">Select Category</option>
+                        <option value="Working Instructions">Working Instructions</option>
+                        <option value="Standard Operating Procedures">Standard Operating Procedures</option>
+                        <option value="Functional Specifications">Functional Specifications</option>
+                        <option value="Templates">Templates</option>
+                    </select>
+                </div>
+                <div class="form-group-modal">
+                    <label for="sectionName">Section Name</label>
+                    <input type="text" id="sectionName" placeholder="e.g., New Department" required>
+                </div>
+                <div class="form-group-modal">
+                    <label for="sectionDescription">Description (Optional)</label>
+                    <textarea id="sectionDescription" placeholder="Enter section description..." rows="3"></textarea>
+                </div>
+                <button type="submit" class="modal-btn">Create Section</button>
+            </form>
+        </div>
+    </div>
+
     <script>
         // ===== LOGIN FUNCTIONALITY =====
         function handleLogin(event) {
@@ -747,15 +1076,26 @@
             const password = document.getElementById('password').value;
             const errorMessage = document.getElementById('errorMessage');
 
-            // Simple validation (you can connect to a real backend)
+            // Check for admin credentials
+            const isAdmin = (email === 'admin@example.com' && password === 'admin123');
+
             if (email && password) {
                 // Hide login page, show main page
                 document.getElementById('loginPage').style.display = 'none';
                 document.getElementById('mainPage').classList.add('show');
                 
-                // Store user info (in real app, this comes from backend)
+                // Show admin toolbar if admin
+                if (isAdmin) {
+                    document.getElementById('adminToolbar').style.display = 'flex';
+                }
+                
+                // Store user info
                 localStorage.setItem('userEmail', email);
+                localStorage.setItem('isAdmin', isAdmin);
                 localStorage.setItem('isLoggedIn', 'true');
+                
+                // Set admin email in modal
+                document.getElementById('adminEmail').textContent = email;
             } else {
                 errorMessage.textContent = 'Please enter valid email and password';
                 errorMessage.classList.add('show');
@@ -769,8 +1109,10 @@
         function handleLogout() {
             if (confirm('Are you sure you want to logout?')) {
                 localStorage.removeItem('userEmail');
+                localStorage.removeItem('isAdmin');
                 localStorage.removeItem('isLoggedIn');
                 document.getElementById('mainPage').classList.remove('show');
+                document.getElementById('adminToolbar').style.display = 'none';
                 document.getElementById('loginPage').style.display = 'flex';
                 document.getElementById('loginForm').reset();
             }
@@ -781,6 +1123,10 @@
             if (localStorage.getItem('isLoggedIn') === 'true') {
                 document.getElementById('loginPage').style.display = 'none';
                 document.getElementById('mainPage').classList.add('show');
+                if (localStorage.getItem('isAdmin') === 'true') {
+                    document.getElementById('adminToolbar').style.display = 'flex';
+                }
+                document.getElementById('adminEmail').textContent = localStorage.getItem('userEmail');
             }
         });
 
@@ -820,9 +1166,56 @@
             });
         });
 
-        // ===== USER MENU TOGGLE =====
+        // ===== MODAL FUNCTIONS =====
+        function openArchivedModal() {
+            document.getElementById('archivedModal').classList.add('show');
+        }
+
+        function openAddFileModal() {
+            document.getElementById('addFileModal').classList.add('show');
+        }
+
+        function openAdminPanel() {
+            document.getElementById('adminModal').classList.add('show');
+        }
+
+        function openAddSectionModal() {
+            document.getElementById('addSectionModal').classList.add('show');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('show');
+        }
+
+        // Close modal when clicking outside of content
+        window.addEventListener('click', function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.classList.remove('show');
+            }
+        });
+
+        // ===== FORM HANDLERS =====
+        function handleAddFile(event) {
+            event.preventDefault();
+            const fileName = document.getElementById('fileName').value;
+            const fileCategory = document.getElementById('fileCategory').value;
+            alert(`File "${fileName}" has been added to ${fileCategory}`);
+            closeModal('addFileModal');
+            document.getElementById('addFileModal').querySelector('form').reset();
+        }
+
+        function handleAddSection(event) {
+            event.preventDefault();
+            const sectionName = document.getElementById('sectionName').value;
+            const sectionCategory = document.getElementById('sectionCategory').value;
+            alert(`Section "${sectionName}" has been created under ${sectionCategory}`);
+            closeModal('addSectionModal');
+            document.getElementById('addSectionModal').querySelector('form').reset();
+        }
+
+        // ===== USER PROFILE =====
         function toggleUserMenu() {
-            alert('User Profile - Coming Soon!');
+            alert('User Profile - ' + localStorage.getItem('userEmail'));
         }
     </script>
 </body>
