@@ -9,133 +9,118 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
   <style>
     :root { --oracle-blue: #234e70; --bg-gray: #f4f7f9; }
-    body { font-family: 'Segoe UI', sans-serif; margin: 0; background-color: var(--bg-gray); color: #333; }
+    body { font-family: 'Segoe UI', sans-serif; margin: 0; background-color: var(--bg-gray); }
 
     /* Header & Search */
-    .header { background-color: var(--oracle-blue); color: white; padding: 35px 8%; display: flex; justify-content: space-between; align-items: center; }
+    .header { background-color: var(--oracle-blue); color: white; padding: 30px 8%; display: flex; justify-content: space-between; align-items: center; }
     .oracle-logo { height: 28px; filter: brightness(0) invert(1); }
     .search-wrapper { position: relative; width: 320px; }
     .search-input { width: 100%; padding: 10px 15px 10px 40px; border-radius: 6px; border: none; outline: none; }
-    .search-icon { position: absolute; left: 12px; top: 12px; color: #888; }
-    #profile-login-trigger { font-size: 24px; cursor: pointer; margin-left: 20px; }
+    .search-icon { position: absolute; left: 12px; top: 11px; color: #888; }
+    #profile-btn { font-size: 24px; cursor: pointer; margin-left: 20px; }
 
-    /* Main Content */
-    .main-content { max-width: 1000px; margin: 30px auto; padding: 0 20px; }
-    .dropdown-card { background: white; border-radius: 8px; margin-bottom: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); overflow: hidden; }
-    .dropdown-btn { width: 100%; padding: 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; border: none; background: none; text-align: left; }
-    .card-title { display: flex; align-items: center; gap: 15px; font-weight: 500; font-size: 16px; }
+    /* Main Accordion */
+    .main-content { max-width: 900px; margin: 30px auto; padding: 0 20px; }
+    .dropdown-card { background: white; border-radius: 8px; margin-bottom: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); overflow: hidden; }
+    .dropdown-btn { width: 100%; padding: 18px 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; border: none; background: none; font-size: 16px; font-weight: 500; }
+    .dropdown-body { display: none; padding: 0 20px 20px 50px; border-top: 1px solid #eee; }
     
-    .dropdown-body { display: none; padding: 0 20px 20px 55px; border-top: 1px solid #f0f0f0; }
-    .subtopic-btn { padding: 12px 0; cursor: pointer; display: flex; justify-content: space-between; font-weight: 500; color: #444; }
-    .subtopic-body { display: none; padding-left: 15px; }
-    .pdf-list { list-style: none; padding: 0; margin: 10px 0; }
-    .pdf-list a { color: #0056b3; text-decoration: none; font-size: 14px; display: block; margin-bottom: 8px; }
+    .section-container { margin-top: 10px; }
+    .section-header { font-weight: bold; color: #555; margin: 10px 0 5px 0; cursor: pointer; display: flex; justify-content: space-between; }
+    .pdf-list { list-style: none; padding: 0; margin: 0; }
+    .pdf-list li { margin-bottom: 8px; }
+    .pdf-list a { color: #0056b3; text-decoration: none; font-size: 14px; display: flex; align-items: center; gap: 8px; }
 
-    /* Admin UI - HIDDEN BY DEFAULT */
-    #admin-toolbar { position: fixed; bottom: 20px; left: 20px; display: none; gap: 10px; z-index: 999; }
-    .admin-btn { padding: 10px 15px; border-radius: 5px; border: none; background: #333; color: white; cursor: pointer; font-size: 13px; display: flex; align-items: center; gap: 5px; }
+    /* Admin UI */
+    #admin-bar { position: fixed; bottom: 20px; left: 20px; display: none; }
+    .admin-btn { padding: 10px 15px; border-radius: 5px; border: none; background: #333; color: white; cursor: pointer; }
 
     /* Modals */
     .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; z-index: 1000; }
-    .modal-content { background: white; padding: 30px; border-radius: 12px; width: 350px; position: relative; text-align: center; }
-    .modal-close { position: absolute; top: 10px; right: 15px; font-size: 24px; cursor: pointer; border: none; background: none; }
-    .form-input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
-    .btn-primary { width: 100%; padding: 12px; background: var(--oracle-blue); color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
+    .modal-content { background: white; padding: 25px; border-radius: 10px; width: 350px; position: relative; }
+    .modal-close { position: absolute; top: 10px; right: 15px; font-size: 20px; cursor: pointer; border: none; background: none; }
+    .form-input, .form-select { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+    .btn-submit { width: 100%; padding: 12px; background: var(--oracle-blue); color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 10px; }
   </style>
 </head>
 <body>
 
   <header class="header">
-    <div style="display: flex; align-items: center; gap: 20px;">
+    <div style="display:flex; align-items:center; gap:15px;">
       <img src="https://upload.wikimedia.org/wikipedia/commons/5/50/Oracle_logo.svg" class="oracle-logo">
-      <h2 style="font-weight: 400; margin: 0; font-size: 22px;">How can we help you today?</h2>
+      <h2 style="font-weight:400; margin:0;">Helpdesk</h2>
     </div>
     <div class="search-wrapper">
       <i class="fas fa-search search-icon"></i>
-      <input type="text" id="searchInput" class="search-input" placeholder="Search...">
+      <input type="text" id="searchInput" class="search-input" placeholder="Search files...">
     </div>
-    <i id="profile-login-trigger" class="fas fa-user-circle"></i>
+    <i id="profile-btn" class="fas fa-user-circle"></i>
   </header>
 
-  <main class="main-content">
-    <div id="dynamic-accordion">
-      
-      <div class="dropdown-card">
-        <div class="dropdown-btn">
-          <div class="card-title"><i class="fas fa-info-circle"></i><span>Working Instructions</span></div>
-          <span>▼</span>
-        </div>
-        <div class="dropdown-body">
-          <div class="subtopic-btn"><span>Receivables</span><span>▼</span></div>
-          <div class="subtopic-body">
-            <ul class="pdf-list">
-              <li><a href="https://res.cloudinary.com/dkwkdsnk7/raw/upload/v1747790590/ORA-10-001_HOW_TO_LOG-IN_TO_ORACLE_1747790536384.pdf" target="_blank">ORA-10-001 HOW TO LOG-IN TO ORACLE</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <div class="dropdown-card">
-        <div class="dropdown-btn">
-          <div class="card-title"><i class="fas fa-clipboard-list"></i><span>Standard Operating Procedures</span></div>
-          <span>▼</span>
-        </div>
-        <div class="dropdown-body">
-           <ul class="pdf-list">
-             <li><a href="https://res.cloudinary.com/dkwkdsnk7/raw/upload/v1750407218/Finance_and_Accounting_SOP_Oracle_Automated_Payment_Processing_signed_stamped_1750407507275.pdf" target="_blank">SOP_Oracle Automated Payment Processing</a></li>
-           </ul>
-        </div>
-      </div>
-
-      <div class="dropdown-card">
-        <div class="dropdown-btn">
-          <div class="card-title"><i class="fas fa-project-diagram"></i><span>Functional Specifications</span></div>
-          <span>▼</span>
-        </div>
-        <div class="dropdown-body">
-           <ul class="pdf-list">
-             <li><a href="https://res.cloudinary.com/dkwkdsnk7/raw/upload/v1748950949/MD050_Collection_Receipt_Form_1748950976602.pdf" target="_blank">MD050 Collection Receipt Form</a></li>
-           </ul>
-        </div>
-      </div>
-
-      <div class="dropdown-card">
-        <div class="dropdown-btn">
-          <div class="card-title"><i class="fas fa-file-invoice"></i><span>Templates</span></div>
-          <span>▼</span>
-        </div>
-        <div class="dropdown-body">
-           <ul class="pdf-list">
-             <li><a href="https://res.cloudinary.com/dkwkdsnk7/raw/upload/v1747790838/ROSE_Cash_Advance_Liquidation_Form_V6-082023_1747790785821.xlsx" target="_blank">Cash Advance Liquidation Form</a></li>
-           </ul>
-        </div>
-      </div>
-
+  <main class="main-content" id="accordion-container">
+    <div id="Working Instructions" class="dropdown-card">
+      <button class="dropdown-btn"><span><i class="fas fa-info-circle"></i> Working Instructions</span><span>▼</span></button>
+      <div class="dropdown-body" id="body-Working-Instructions"></div>
+    </div>
+    <div id="Standard Operating Procedures" class="dropdown-card">
+      <button class="dropdown-btn"><span><i class="fas fa-clipboard-list"></i> Standard Operating Procedures</span><span>▼</span></button>
+      <div class="dropdown-body" id="body-Standard-Operating-Procedures"></div>
+    </div>
+    <div id="Functional Specifications" class="dropdown-card">
+      <button class="dropdown-btn"><span><i class="fas fa-project-diagram"></i> Functional Specifications</span><span>▼</span></button>
+      <div class="dropdown-body" id="body-Functional-Specifications"></div>
+    </div>
+    <div id="Templates" class="dropdown-card">
+      <button class="dropdown-btn"><span><i class="fas fa-file-invoice"></i> Templates</span><span>▼</span></button>
+      <div class="dropdown-body" id="body-Templates"></div>
     </div>
   </main>
 
-  <div id="login-modal" class="modal">
+  <div id="auth-modal" class="modal">
     <div class="modal-content">
-      <button class="modal-close" id="close-modal">×</button>
-      <h2 style="color: var(--oracle-blue);">Admin Login</h2>
-      <input type="email" id="email" class="form-input" placeholder="Email">
-      <input type="password" id="password" class="form-input" placeholder="Password">
-      <button id="login-btn" class="btn-primary">Login</button>
-      <p id="error-msg" style="color:red; font-size:12px; margin-top:10px;"></p>
+      <button class="modal-close" onclick="closeModals()">×</button>
+      <div id="login-form">
+        <h2 style="text-align:center">Admin Login</h2>
+        <input type="email" id="email" class="form-input" placeholder="Email">
+        <input type="password" id="password" class="form-input" placeholder="Password">
+        <button id="login-action" class="btn-submit">Sign In</button>
+      </div>
+      <div id="user-panel" style="display:none; text-align:center">
+        <h2>Admin Session</h2>
+        <p id="user-email"></p>
+        <button id="logout-action" class="btn-submit" style="background:#d9534f">Sign Out</button>
+      </div>
     </div>
   </div>
 
-  <div id="admin-toolbar">
-    <button class="admin-btn" id="add-sec-btn"><i class="fas fa-plus"></i> Add Section</button>
-    <button class="admin-btn" onclick="firebase.auth().signOut()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+  <div id="upload-modal" class="modal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModals()">×</button>
+      <h2>Add Document</h2>
+      <select id="up-category" class="form-select">
+        <option>Working Instructions</option>
+        <option>Standard Operating Procedures</option>
+        <option>Functional Specifications</option>
+        <option>Templates</option>
+      </select>
+      <input type="text" id="up-section" class="form-input" placeholder="Section Name (e.g. Receivables)">
+      <input type="file" id="up-file" class="form-input">
+      <button id="up-submit" class="btn-submit">Upload to Cloud</button>
+    </div>
+  </div>
+
+  <div id="admin-bar">
+    <button class="admin-btn" onclick="document.getElementById('upload-modal').style.display='flex'">
+      <i class="fas fa-plus"></i> Add File
+    </button>
   </div>
 
   <script>
-    // Firebase Config
     const firebaseConfig = {
       apiKey: "AIzaSyBaSuFhNUeghfXEznYCHxYnagkjiojfO_M",
       authDomain: "helpdeskrpharmacy.firebaseapp.com",
@@ -147,41 +132,77 @@
     };
     firebase.initializeApp(firebaseConfig);
 
-    // Accordion Control
-    document.querySelectorAll('.dropdown-btn, .subtopic-btn').forEach(btn => {
-      btn.addEventListener('click', function(e) {
-        e.stopPropagation();
-        const body = this.nextElementSibling;
-        if (body) body.style.display = body.style.display === 'block' ? 'none' : 'block';
-      });
+    const auth = firebase.auth();
+    const db = firebase.database();
+    const storage = firebase.storage();
+
+    // UI Logic
+    function closeModals() { document.querySelectorAll('.modal').forEach(m => m.style.display='none'); }
+    document.getElementById('profile-btn').onclick = () => document.getElementById('auth-modal').style.display='flex';
+
+    // Auth Actions
+    document.getElementById('login-action').onclick = () => {
+      auth.signInWithEmailAndPassword(document.getElementById('email').value, document.getElementById('password').value)
+        .then(() => closeModals()).catch(e => alert(e.message));
+    };
+    document.getElementById('logout-action').onclick = () => auth.signOut();
+
+    auth.onAuthStateChanged(user => {
+      document.getElementById('admin-bar').style.display = user ? 'block' : 'none';
+      document.getElementById('login-form').style.display = user ? 'none' : 'block';
+      document.getElementById('user-panel').style.display = user ? 'block' : 'none';
+      if(user) document.getElementById('user-email').innerText = user.email;
     });
 
-    // Modal Control
-    const modal = document.getElementById('login-modal');
-    document.getElementById('profile-login-trigger').onclick = () => modal.style.display = 'flex';
-    document.getElementById('close-modal').onclick = () => modal.style.display = 'none';
+    // Upload Action
+    document.getElementById('up-submit').onclick = function() {
+      const file = document.getElementById('up-file').files[0];
+      const cat = document.getElementById('up-category').value;
+      const sec = document.getElementById('up-section').value;
+      if(!file || !sec) return alert("Fill all fields");
 
-    // Firebase Authentication Login
-    document.getElementById('login-btn').onclick = () => {
-      const email = document.getElementById('email').value;
-      const pass = document.getElementById('password').value;
-      firebase.auth().signInWithEmailAndPassword(email, pass)
-        .then(() => { modal.style.display = 'none'; })
-        .catch(err => { document.getElementById('error-msg').innerText = "Login Failed: " + err.message; });
+      const ref = storage.ref('docs/' + file.name);
+      ref.put(file).then(snap => snap.ref.getDownloadURL()).then(url => {
+        db.ref('files').push({ category: cat, section: sec, name: file.name, url: url });
+        alert("Success!");
+        closeModals();
+      });
     };
 
-    // Watch login state: Show/Hide admin buttons automatically
-    firebase.auth().onAuthStateChanged(user => {
-      document.getElementById('admin-toolbar').style.display = user ? 'flex' : 'none';
+    // Load & Render Files from Database
+    db.ref('files').on('value', snapshot => {
+      // Clear current lists
+      document.querySelectorAll('.dropdown-body').forEach(b => b.innerHTML = '');
+      
+      snapshot.forEach(child => {
+        const data = child.val();
+        const safeId = data.category.replace(/\s+/g, '-');
+        const container = document.getElementById('body-' + safeId);
+        
+        let secDiv = container.querySelector(`[data-sec="${data.section}"]`);
+        if(!secDiv) {
+          secDiv = document.createElement('div');
+          secDiv.className = 'section-container';
+          secDiv.setAttribute('data-sec', data.section);
+          secDiv.innerHTML = `<div class="section-header">${data.section} <span>▼</span></div><ul class="pdf-list"></ul>`;
+          container.appendChild(secDiv);
+        }
+        const li = document.createElement('li');
+        li.innerHTML = `<a href="${data.url}" target="_blank"><i class="far fa-file-pdf"></i> ${data.name}</a>`;
+        secDiv.querySelector('ul').appendChild(li);
+      });
+      setupAccordions();
     });
 
-    // Search Filtering
-    document.getElementById('searchInput').addEventListener('keyup', function() {
-      let filter = this.value.toLowerCase();
-      document.querySelectorAll('.dropdown-card').forEach(card => {
-        card.style.display = card.innerText.toLowerCase().includes(filter) ? "" : "none";
+    function setupAccordions() {
+      document.querySelectorAll('.dropdown-btn, .section-header').forEach(btn => {
+        btn.onclick = function(e) {
+          e.stopImmediatePropagation();
+          const panel = this.nextElementSibling;
+          panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
+        };
       });
-    });
+    }
   </script>
 </body>
 </html>
