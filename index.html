@@ -12,85 +12,68 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
   <style>
-    :root { --oracle-blue: #234e70; --oracle-red: #f80000; --bg: #f4f7f9; }
+    :root { --oracle-blue: #234e70; --oracle-red: #eb1000; --bg: #f4f7f9; }
     body { font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; background-color: var(--bg); color: #333; }
 
-   <header class="header">
-  <div class="header-left">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/5/50/Oracle_logo.svg" class="oracle-logo">
-    <h1 class="header-title" style="margin-left: 10px; border-left: 1px solid rgba(255,255,255,0.3); padding-left: 15px;">Pharmacy Helpdesk</h1>
-  </div>
-  
-  <div class="header-right" style="display: flex; align-items: center; gap: 15px;">
-    <div class="search-wrapper" style="position: relative; width: 250px;">
-      <i class="fas fa-search search-icon" style="position: absolute; left: 10px; top: 10px; color: #666;"></i>
-      <input type="text" id="searchBar" placeholder="Search..." style="width: 100%; padding: 8px 10px 8px 35px; border-radius: 4px; border: none;">
-    </div>
-
-    <div id="login-trigger" style="
-      background-color: #eb1000; 
+    .header { 
+      background-color: var(--oracle-blue); 
       color: white; 
-      padding: 8px 16px; 
-      border-radius: 4px; 
-      cursor: pointer; 
+      padding: 12px 5%; 
       display: flex; 
+      justify-content: space-between; 
       align-items: center; 
+      border-bottom: 5px solid var(--oracle-red);
+      position: sticky; top: 0; z-index: 1000;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+    .header-left { display: flex; align-items: center; gap: 15px; }
+    .oracle-logo { height: 25px; filter: brightness(0) invert(1); }
+    .header-title { font-size: 20px; font-weight: 400; margin: 0; border-left: 1px solid rgba(255,255,255,0.3); padding-left: 15px; }
+
+    .header-right { display: flex; align-items: center; gap: 15px; }
+    
+    .search-wrapper { position: relative; width: 220px; }
+    .search-wrapper input { 
+      width: 100%; padding: 8px 10px 8px 35px; 
+      border-radius: 4px; border: none; outline: none; font-size: 14px;
+    }
+    .search-icon { position: absolute; left: 10px; top: 10px; color: #666; }
+    
+    #login-trigger { 
+      background-color: var(--oracle-red);
+      color: white;
+      padding: 8px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
       gap: 8px;
       font-weight: bold;
       font-size: 13px;
       transition: 0.3s;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    ">
-      <i class="fas fa-user-shield"></i>
-      <span>ADMIN LOGIN</span>
-    </div>
-  </div>
-</header>
-    
-    /* Login Icon Styling - FIXED */
-    #login-trigger { 
-      font-size: 24px; 
-      cursor: pointer; 
-      color: white; 
-      transition: 0.3s;
-      padding: 5px;
+      border: 1px solid rgba(255,255,255,0.2);
     }
-    #login-trigger:hover { 
-      color: #ccc;
-      transform: scale(1.1);
-    }
-
-    /* Layout */
+    #login-trigger:hover { background-color: #c00d00; transform: translateY(-1px); }
+   
     .container { max-width: 1000px; margin: 40px auto; padding: 0 20px; }
-    
-    .card { background: white; border-radius: 8px; margin-bottom: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); overflow: hidden; }
+    .card { background: white; border-radius: 8px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); overflow: hidden; }
     .card-header { 
-      width: 100%; padding: 18px 25px; display: flex; justify-content: space-between; 
+      width: 100%; padding: 20px 25px; display: flex; justify-content: space-between; 
       align-items: center; cursor: pointer; border: none; background: white; 
       font-size: 16px; font-weight: 500; color: #444; text-align: left;
     }
     .card-header:hover { background: #f9f9f9; }
-    .card-header i:first-child { margin-right: 15px; color: #555; width: 20px; text-align: center; }
-    .arrow { color: #888; font-size: 12px; transition: transform 0.3s; }
+    .arrow { color: #888; font-size: 14px; transition: transform 0.3s; }
+    .card-body { display: none; padding: 15px 30px 25px 65px; border-top: 1px solid #eee; background: #fafafa; }
 
-    .card-body { display: none; padding: 10px 25px 20px 60px; border-top: 1px solid #eee; background: #fafafa; }
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); display: none; justify-content: center; align-items: center; z-index: 2000; }
+    .modal-box { background: white; padding: 30px; border-radius: 8px; width: 330px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+    .close-modal { position: absolute; top: 10px; right: 15px; font-size: 24px; cursor: pointer; border: none; background: none; color: #888; }
+    .input-field { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+    .btn-main { width: 100%; padding: 12px; background: var(--oracle-blue); color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
 
-    .subject-section { margin-bottom: 8px; }
-    .subject-header { font-weight: 600; color: var(--oracle-blue); padding: 8px 0; cursor: pointer; display: flex; justify-content: space-between; border-bottom: 1px solid #eee; }
-    .file-list { list-style: none; padding: 5px 0 5px 15px; margin: 0; display: none; }
-    .file-list li { margin: 5px 0; }
-    .file-list a { color: #555; text-decoration: none; font-size: 14px; display: flex; align-items: center; gap: 8px; }
-    .file-list a:hover { color: var(--oracle-red); text-decoration: underline; }
-
-    /* Modals */
-    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; z-index: 2000; }
-    .modal-box { background: white; padding: 30px; border-radius: 8px; width: 320px; position: relative; }
-    .close-modal { position: absolute; top: 10px; right: 15px; font-size: 20px; cursor: pointer; border: none; background: none; color: #888; }
-    .input-field { width: 100%; padding: 10px; margin-bottom: 12px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
-    .btn-main { width: 100%; padding: 10px; background: var(--oracle-blue); color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
-
-    #admin-toolbar { position: fixed; bottom: 30px; right: 30px; display: none; }
-    .btn-admin { background: #333; color: white; border: none; padding: 15px 20px; border-radius: 50px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3); font-weight: bold; }
+    #admin-toolbar { position: fixed; bottom: 30px; right: 30px; display: none; z-index: 999; }
+    .btn-admin { background: #333; color: white; border: none; padding: 15px 25px; border-radius: 50px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.4); display: flex; align-items: center; gap: 10px; }
   </style>
 </head>
 <body>
@@ -98,32 +81,35 @@
 <header class="header">
   <div class="header-left">
     <img src="https://upload.wikimedia.org/wikipedia/commons/5/50/Oracle_logo.svg" class="oracle-logo">
-    <h1 class="header-title">Pharmacy Helpdesk</h1>
+    <h1 class="header-title">Helpdesk</h1>
   </div>
   <div class="header-right">
     <div class="search-wrapper">
       <i class="fas fa-search search-icon"></i>
-      <input type="text" id="searchBar" placeholder="Search resources...">
+      <input type="text" id="searchBar" placeholder="Search...">
     </div>
-    <i id="login-trigger" class="fas fa-user-circle" title="Admin Login"></i>
+    <div id="login-trigger">
+      <i class="fas fa-user-shield"></i>
+      <span>ADMIN LOGIN</span>
+    </div>
   </div>
 </header>
 
 <main class="container" id="accordion-container">
   <div class="card">
-    <button class="card-header"><span><i class="fas fa-book"></i> Working Instructions</span> <i class="fas fa-chevron-down arrow"></i></button>
+    <button class="card-header"><span><i class="fas fa-info-circle"></i> Working Instructions</span> <i class="fas fa-caret-down arrow"></i></button>
     <div class="card-body" id="body-Working-Instructions"></div>
   </div>
   <div class="card">
-    <button class="card-header"><span><i class="fas fa-file-alt"></i> Standard Operating Procedures</span> <i class="fas fa-chevron-down arrow"></i></button>
+    <button class="card-header"><span><i class="fas fa-clipboard-list"></i> Standard Operating Procedures</span> <i class="fas fa-caret-down arrow"></i></button>
     <div class="card-body" id="body-Standard-Operating-Procedures"></div>
   </div>
   <div class="card">
-    <button class="card-header"><span><i class="fas fa-code"></i> Functional Specifications</span> <i class="fas fa-chevron-down arrow"></i></button>
+    <button class="card-header"><span><i class="fas fa-project-diagram"></i> Functional Specifications</span> <i class="fas fa-caret-down arrow"></i></button>
     <div class="card-body" id="body-Functional-Specifications"></div>
   </div>
   <div class="card">
-    <button class="card-header"><span><i class="fas fa-layer-group"></i> Templates</span> <i class="fas fa-chevron-down arrow"></i></button>
+    <button class="card-header"><span><i class="fas fa-file-invoice"></i> Templates</span> <i class="fas fa-caret-down arrow"></i></button>
     <div class="card-body" id="body-Templates"></div>
   </div>
 </main>
@@ -132,16 +118,16 @@
   <div class="modal-box">
     <button class="close-modal">&times;</button>
     <div id="login-view">
-      <h3 style="margin-top:0; text-align:center;">Admin Access</h3>
-      <input type="email" id="loginEmail" class="input-field" placeholder="Email">
+      <h3 style="margin-top:0; text-align:center;">Admin Portal</h3>
+      <input type="email" id="loginEmail" class="input-field" placeholder="Email Address">
       <input type="password" id="loginPass" class="input-field" placeholder="Password">
-      <button id="doLogin" class="btn-main">Sign In</button>
-      <p id="loginError" style="color:red; font-size:11px; text-align:center; margin-top:10px;"></p>
+      <button id="doLogin" class="btn-main">Login Now</button>
+      <p id="loginError" style="color:red; font-size:12px; text-align:center; margin-top:10px;"></p>
     </div>
     <div id="profile-view" style="display:none; text-align:center;">
-      <p style="margin-bottom:5px;">Logged in as:</p>
-      <p id="userMail" style="font-weight:bold; margin-bottom:20px;"></p>
-      <button id="doLogout" class="btn-main" style="background:var(--oracle-red)">Logout</button>
+      <p>Logged in as:</p>
+      <p id="userMail" style="font-weight:bold; color:var(--oracle-blue);"></p>
+      <button id="doLogout" class="btn-main" style="background:var(--oracle-red)">Sign Out</button>
     </div>
   </div>
 </div>
@@ -149,28 +135,28 @@
 <div id="uploadModal" class="modal-overlay">
   <div class="modal-box">
     <button class="close-modal">&times;</button>
-    <h3>Upload File</h3>
+    <h3>Upload Document</h3>
     <select id="upCat" class="input-field">
       <option>Working Instructions</option>
       <option>Standard Operating Procedures</option>
       <option>Functional Specifications</option>
       <option>Templates</option>
     </select>
-    <input type="text" id="upSub" class="input-field" placeholder="Subject/Folder Name">
+    <input type="text" id="upSub" class="input-field" placeholder="Subject Name">
     <input type="file" id="upFile" class="input-field">
-    <button id="doUpload" class="btn-main">Start Upload</button>
+    <button id="doUpload" class="btn-main">Upload to Database</button>
     <p id="upStatus" style="text-align:center; font-size:12px; margin-top:10px;"></p>
   </div>
 </div>
 
 <div id="admin-toolbar">
   <button class="btn-admin" onclick="document.getElementById('uploadModal').style.display='flex'">
-    <i class="fas fa-plus"></i> ADD DOCUMENT
+    <i class="fas fa-plus-circle"></i> ADD FILE
   </button>
 </div>
 
 <script>
-  // Firebase Configuration (Gamita imong credentials)
+  
   const firebaseConfig = {
     apiKey: "AIzaSyBaSuFhNUeghfXEznYCHxYnagkjiojfO_M",
     authDomain: "helpdeskrpharmacy.firebaseapp.com",
@@ -183,78 +169,65 @@
   firebase.initializeApp(firebaseConfig);
   const auth = firebase.auth(), db = firebase.database(), storage = firebase.storage();
 
-  // Modal Controls
   const closeAll = () => document.querySelectorAll('.modal-overlay').forEach(m => m.style.display='none');
   document.querySelectorAll('.close-modal').forEach(b => b.onclick = closeAll);
   
-  // FIXED: Open Login Modal
   document.getElementById('login-trigger').onclick = () => {
     document.getElementById('loginModal').style.display = 'flex';
   };
 
-  // Login Logic
   document.getElementById('doLogin').onclick = () => {
-    const email = document.getElementById('loginEmail').value;
-    const pass = document.getElementById('loginPass').value;
-    auth.signInWithEmailAndPassword(email, pass)
-      .then(closeAll)
-      .catch(e => document.getElementById('loginError').innerText = e.message);
+    auth.signInWithEmailAndPassword(document.getElementById('loginEmail').value, document.getElementById('loginPass').value)
+      .then(closeAll).catch(e => document.getElementById('loginError').innerText = e.message);
   };
-
   document.getElementById('doLogout').onclick = () => auth.signOut().then(closeAll);
 
-  // Auth Observer
   auth.onAuthStateChanged(user => {
     document.getElementById('admin-toolbar').style.display = user ? 'block' : 'none';
     document.getElementById('login-view').style.display = user ? 'none' : 'block';
     document.getElementById('profile-view').style.display = user ? 'block' : 'none';
-    if(user) document.getElementById('userMail').innerText = user.email;
+    if(user) {
+        document.getElementById('userMail').innerText = user.email;
+        document.querySelector('#login-trigger span').innerText = "LOGOUT";
+    } else {
+        document.querySelector('#login-trigger span').innerText = "ADMIN LOGIN";
+    }
   });
 
-  // Upload Logic
   document.getElementById('doUpload').onclick = () => {
     const file = document.getElementById('upFile').files[0];
     const cat = document.getElementById('upCat').value;
     const sub = document.getElementById('upSub').value;
-    const status = document.getElementById('upStatus');
-
-    if(!file || !sub) return alert("Please select a file and enter a subject.");
-    
-    status.innerText = "Uploading...";
-    const ref = storage.ref('docs/' + Date.now() + "_" + file.name);
-    
-    ref.put(file).then(snap => snap.ref.getDownloadURL()).then(url => {
+    if(!file || !sub) return alert("Fill all fields.");
+    storage.ref('docs/' + Date.now() + "_" + file.name).put(file).then(snap => snap.ref.getDownloadURL()).then(url => {
       db.ref('files').push({ category: cat, subject: sub, name: file.name, url: url });
-      status.innerText = "Upload Success!";
-      setTimeout(() => { closeAll(); status.innerText = ""; }, 1000);
-    }).catch(err => status.innerText = "Error: " + err.message);
+      closeAll();
+    });
   };
 
-  // Load Files from Database
   db.ref('files').on('value', snap => {
     document.querySelectorAll('.card-body').forEach(b => b.innerHTML = '');
     snap.forEach(child => {
       const data = child.val();
       const parentId = 'body-' + data.category.replace(/\s+/g, '-');
       const parent = document.getElementById(parentId);
-      
       if(parent) {
         let block = parent.querySelector(`[data-sub="${data.subject}"]`);
         if(!block) {
           block = document.createElement('div');
           block.className = 'subject-section';
           block.setAttribute('data-sub', data.subject);
-          block.innerHTML = `<div class="subject-header">${data.subject} <i class="fas fa-chevron-down"></i></div><ul class="file-list"></ul>`;
+          block.innerHTML = `<div style="font-weight:600; color:#234e70; padding:10px 0; cursor:pointer; border-bottom:1px solid #ddd;">${data.subject}</div><ul style="list-style:none; padding:10px 0 10px 15px; margin:0;"></ul>`;
           parent.appendChild(block);
         }
         const li = document.createElement('li');
-        li.innerHTML = `<a href="${data.url}" target="_blank"><i class="far fa-file-pdf"></i> ${data.name}</a>`;
+        li.style.margin = "8px 0";
+        li.innerHTML = `<a href="${data.url}" target="_blank" style="color:#333; text-decoration:none; font-size:14px; display:flex; align-items:center; gap:10px;"><i class="far fa-file-pdf" style="color:#eb1000"></i> ${data.name}</a>`;
         block.querySelector('ul').appendChild(li);
       }
     });
   });
 
-  // Accordion Logic
   document.getElementById('accordion-container').addEventListener('click', (e) => {
     const head = e.target.closest('.card-header');
     if(head) {
@@ -262,18 +235,9 @@
       const isOpen = body.style.display === 'block';
       body.style.display = isOpen ? 'none' : 'block';
       head.querySelector('.arrow').style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
-      return;
-    }
-    const subH = e.target.closest('.subject-header');
-    if(subH) {
-      const list = subH.nextElementSibling;
-      const isVisible = list.style.display === 'block';
-      list.style.display = isVisible ? 'none' : 'block';
-      subH.querySelector('i').style.transform = isVisible ? 'rotate(0deg)' : 'rotate(180deg)';
     }
   });
 
-  // Search Logic
   document.getElementById('searchBar').onkeyup = function() {
     const query = this.value.toLowerCase();
     document.querySelectorAll('.card').forEach(card => {
