@@ -193,6 +193,7 @@ body {
   font-size: 13px;
   margin-bottom: 10px;
   min-height: 18px;
+  line-height: 1.4;
 }
 .modal-btn {
   width: 100%;
@@ -216,7 +217,7 @@ body {
 
 <header class="header">
   <div class="header-left">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/5/50/Oracle_logo.svg" class="oracle-logo">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/5/50/Oracle_logo.svg" class="oracle-logo" alt="Oracle">
     <h1 class="header-title">How can we help you today?</h1>
   </div>
   <div class="search-wrapper">
@@ -230,7 +231,7 @@ body {
 </button>
 
 <div id="admin-toolbar">
-  <button onclick="uploadFile()" style="padding:10px;background:black;color:white;border:none;border-radius:20px;cursor:pointer;">
+  <button onclick="uploadFile()" style="padding:10px 16px;background:black;color:white;border:none;border-radius:20px;cursor:pointer;">
     + Upload
   </button>
 </div>
@@ -241,8 +242,8 @@ body {
     <button class="modal-close" onclick="closeModal()">&times;</button>
     <h2 class="modal-title">Login</h2>
     <div id="modal-logged-out">
-      <input class="modal-input" type="email" id="modal-email" placeholder="Email">
-      <input class="modal-input" type="password" id="modal-password" placeholder="Password">
+      <input class="modal-input" type="email" id="modal-email" placeholder="Email" autocomplete="email">
+      <input class="modal-input" type="password" id="modal-password" placeholder="Password" autocomplete="current-password">
       <div class="modal-error" id="modal-error"></div>
       <button class="modal-btn" id="modal-login-btn" onclick="doLogin()">Login</button>
     </div>
@@ -285,24 +286,38 @@ body {
 </main>
 
 <script>
-// ======================================================
-// STEP 1: Go to https://console.firebase.google.com
-// STEP 2: Open your project → gear icon → Project settings
-// STEP 3: Scroll to "Your apps" and copy your config here
-// ======================================================
 const firebaseConfig = {
-  apiKey:            "YOUR_API_KEY",
-  authDomain:        "helpdeskrpharmacy.firebaseapp.com",
-  databaseURL:       "https://helpdeskrpharmacy-default-rtdb.firebaseio.com",
-  projectId:         "helpdeskrpharmacy",
-  storageBucket:     "helpdeskrpharmacy.appspot.com",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId:             "YOUR_APP_ID"
+  apiKey:            "AIzaSyCA57BpptByKfLX1ykKjpwnq_Og1EsJAXM",
+  authDomain:        "my-first-firebase-f6ec0.firebaseapp.com",
+  databaseURL:       "https://my-first-firebase-f6ec0-default-rtdb.firebaseio.com",
+  projectId:         "my-first-firebase-f6ec0",
+  storageBucket:     "my-first-firebase-f6ec0.firebasestorage.app",
+  messagingSenderId: "9863151599",
+  appId:             "1:9863151599:web:ca3ff5c66228369041801a",
+  measurementId:     "G-E9GCVJQF71"
 };
-// ======================================================
+
+function friendlyError(e) {
+  const code = e.code || '';
+  const msg  = e.message || '';
+  if (code === 'auth/invalid-api-key' || msg.includes('API key not valid') || msg.trim().startsWith('{'))
+    return 'Configuration error. Please contact your administrator.';
+  if (code === 'auth/user-not-found' || code === 'auth/wrong-password' || code === 'auth/invalid-credential')
+    return 'Incorrect email or password.';
+  if (code === 'auth/invalid-email')
+    return 'Please enter a valid email address.';
+  if (code === 'auth/too-many-requests')
+    return 'Too many failed attempts. Please wait and try again later.';
+  if (code === 'auth/user-disabled')
+    return 'This account has been disabled. Contact your administrator.';
+  if (code === 'auth/network-request-failed')
+    return 'Network error. Please check your internet connection.';
+  if (code === 'auth/requires-recent-login')
+    return 'Please log out and log back in before changing your password.';
+  return 'Something went wrong. Please try again.';
+}
 
 let auth, db, storage, firebaseReady = false;
-
 try {
   firebase.initializeApp(firebaseConfig);
   auth    = firebase.auth();
@@ -310,10 +325,9 @@ try {
   storage = firebase.storage();
   firebaseReady = true;
 } catch(err) {
-  console.error("Firebase failed to start:", err.message);
+  console.error("Firebase init error:", err.message);
 }
 
-// MODAL OPEN / CLOSE
 function openModal() {
   document.getElementById('login-modal').classList.add('active');
   document.getElementById('modal-error').textContent = '';
@@ -334,7 +348,6 @@ function closeChangePassword() {
   document.getElementById('change-password-modal').classList.remove('active');
 }
 
-// Close when clicking outside the modal box
 document.getElementById('login-modal').addEventListener('click', function(e) {
   if (e.target === this) closeModal();
 });
@@ -342,14 +355,12 @@ document.getElementById('change-password-modal').addEventListener('click', funct
   if (e.target === this) closeChangePassword();
 });
 
-// Open modal on button click
 document.getElementById('login-trigger').onclick = () => openModal();
 
-// LOGIN
 function doLogin() {
   const errEl = document.getElementById('modal-error');
   if (!firebaseReady) {
-    errEl.textContent = 'Firebase is not set up. Please add your API key.';
+    errEl.textContent = 'System is not configured. Please contact your administrator.';
     return;
   }
   const email = document.getElementById('modal-email').value.trim();
@@ -363,58 +374,51 @@ function doLogin() {
 
   auth.signInWithEmailAndPassword(email, pass)
     .then(() => closeModal())
-    .catch(e  => { errEl.textContent = e.message; })
+    .catch(e  => { errEl.textContent = friendlyError(e); })
     .finally(() => { btn.disabled = false; btn.textContent = 'Login'; });
 }
 
 document.getElementById('modal-email').addEventListener('keydown',    e => { if (e.key === 'Enter') doLogin(); });
 document.getElementById('modal-password').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
 
-// LOGOUT
 function doLogout() {
   if (!firebaseReady) return;
   auth.signOut().then(() => closeModal());
 }
 
-// CHANGE PASSWORD
 function doChangePassword() {
-  const newPass     = document.getElementById('new-password').value;
-  const confirmPass = document.getElementById('confirm-password').value;
-  const errEl       = document.getElementById('change-pw-error');
-  if (!newPass || !confirmPass)  { errEl.textContent = 'Please fill in both fields.'; return; }
-  if (newPass !== confirmPass)   { errEl.textContent = 'Passwords do not match.'; return; }
-  if (newPass.length < 6)        { errEl.textContent = 'Password must be at least 6 characters.'; return; }
+  const errEl   = document.getElementById('change-pw-error');
+  const newPass  = document.getElementById('new-password').value;
+  const confPass = document.getElementById('confirm-password').value;
+  if (!newPass || !confPass)  { errEl.textContent = 'Please fill in both fields.'; return; }
+  if (newPass !== confPass)   { errEl.textContent = 'Passwords do not match.'; return; }
+  if (newPass.length < 6)     { errEl.textContent = 'Password must be at least 6 characters.'; return; }
   errEl.textContent = '';
   auth.currentUser.updatePassword(newPass)
     .then(() => { closeChangePassword(); alert('Password updated successfully.'); })
-    .catch(e  => { errEl.textContent = e.message; });
+    .catch(e  => { errEl.textContent = friendlyError(e); });
 }
 
-// AUTH STATE — updates button and modal view
 if (firebaseReady) {
   auth.onAuthStateChanged(user => {
     document.getElementById('admin-toolbar').style.display = user ? 'block' : 'none';
-    if (user) {
-      document.getElementById('login-trigger').innerHTML    = '<i class="fas fa-user-shield"></i> ADMIN';
-      document.getElementById('modal-logged-out').style.display = 'none';
-      document.getElementById('modal-logged-in').style.display  = 'block';
-    } else {
-      document.getElementById('login-trigger').innerHTML    = '<i class="fas fa-user-shield"></i> ADMIN LOGIN';
-      document.getElementById('modal-logged-out').style.display = 'block';
-      document.getElementById('modal-logged-in').style.display  = 'none';
-    }
+    document.getElementById('login-trigger').innerHTML = user
+      ? '<i class="fas fa-user-shield"></i> ADMIN'
+      : '<i class="fas fa-user-shield"></i> ADMIN LOGIN';
+    document.getElementById('modal-logged-out').style.display = user ? 'none'  : 'block';
+    document.getElementById('modal-logged-in').style.display  = user ? 'block' : 'none';
   });
 }
 
-// UPLOAD FILE
 function uploadFile() {
   if (!firebaseReady) return;
-  const cat   = prompt('Category:');
-  const sub   = prompt('Subject:');
+  const cat   = prompt('Category:');  if (!cat) return;
+  const sub   = prompt('Subject:');   if (!sub) return;
   const input = document.createElement('input');
   input.type  = 'file';
   input.onchange = e => {
     const file = e.target.files[0];
+    if (!file) return;
     storage.ref('docs/' + Date.now() + '_' + file.name).put(file)
       .then(s => s.ref.getDownloadURL())
       .then(url => db.ref('files').push({ category: cat, subject: sub, name: file.name, url }));
@@ -422,19 +426,16 @@ function uploadFile() {
   input.click();
 }
 
-// DELETE FILE
 function deleteFile(id) {
   if (!firebaseReady) return;
   if (confirm('Delete this file?')) db.ref('files/' + id).remove();
 }
 
-// LOAD FILES FROM FIREBASE
 if (firebaseReady) {
   db.ref('files').on('value', snap => {
     document.querySelectorAll('.card-body').forEach(b => b.innerHTML = '');
     snap.forEach(c => {
-      const d      = c.val();
-      const id     = c.key;
+      const d = c.val(), id = c.key;
       const parent = document.getElementById('body-' + d.category.replace(/\s+/g, '-'));
       if (!parent) return;
       let block = parent.querySelector(`[data-sub="${d.subject}"]`);
@@ -446,27 +447,22 @@ if (firebaseReady) {
         parent.appendChild(block);
       }
       const li = document.createElement('li');
-      li.innerHTML = `
-        <a href="${d.url}" target="_blank">${d.name}</a>
-        ${auth.currentUser ? `<button class="delete-btn" onclick="deleteFile('${id}')">Delete</button>` : ''}
-      `;
+      li.innerHTML = `<a href="${d.url}" target="_blank" rel="noreferrer">${d.name}</a>`
+        + (auth.currentUser ? ` <button class="delete-btn" onclick="deleteFile('${id}')">Delete</button>` : '');
       block.querySelector('ul').appendChild(li);
     });
   });
 }
 
-// ACCORDION
 document.getElementById('accordion-container').addEventListener('click', e => {
   const h = e.target.closest('.card-header');
-  if (h) {
-    const b    = h.nextElementSibling;
-    const open = b.style.display === 'block';
-    b.style.display = open ? 'none' : 'block';
-    h.querySelector('.arrow').style.transform = open ? 'rotate(0)' : 'rotate(180deg)';
-  }
+  if (!h) return;
+  const b = h.nextElementSibling;
+  const open = b.style.display === 'block';
+  b.style.display = open ? 'none' : 'block';
+  h.querySelector('.arrow').style.transform = open ? 'rotate(0)' : 'rotate(180deg)';
 });
 
-// SEARCH
 document.getElementById('searchBar').onkeyup = function() {
   const q = this.value.toLowerCase();
   document.querySelectorAll('.card').forEach(c => {
